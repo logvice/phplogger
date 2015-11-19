@@ -2,7 +2,7 @@
 
 [![Author](http://img.shields.io/badge/author-@albankora-blue.svg?style=flat-square)](https://twitter.com/albankora)
 [![Build Status](https://img.shields.io/travis/logvice/phplogger.svg)](https://travis-ci.org/logvice/phplogger)
-[![Total Downloads](https://img.shields.io/dt/packagist/logvice/phplogger.svg?style=flat-square)](https://packagist.org/packages/logvice/phplogger)
+[![Total Downloads](https://img.shields.io/packagist/dt/logvice/phplogger.svg?style=flat-square)](https://packagist.org/packages/logvice/phplogger)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 LogVice\PHPLogger sends your logs to LogVice.com service or to your own LogVice platform installation. This library implements the [PSR-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md) standards.
