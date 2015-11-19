@@ -23,5 +23,11 @@
     },
     "provide": {
         "psr/log-implementation": "1.0.0"
+    },
+    "scripts": {
+        "test": [
+            "parallel-lint . --exclude vendor",
+            "phpunit"
+        ]
     }
 }
