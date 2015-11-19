@@ -24,8 +24,14 @@ $log = new Logger('name');
 $log->setOutputs(new FileOutput('path/to/your/log/directory', 'log'));
 
 // add records to the log file
-$log->warning('Foo');
-$log->error('Bar');
+$log->debug('Foo');
+$log->info('Bar');
+$log->notice('Foo');
+$log->warning('Bar');
+$log->error('Foo');
+$log->critical('Bar');
+$log->alert('Foo');
+$log->emergency('Bar');
 ```
 
 ## About
