@@ -12,7 +12,11 @@ LogVice\PHPLogger sends your logs to LogVice.com service or to your own LogVice 
 Install the latest version with
 
 ```bash
-$ composer require logvice/phplogger
+{
+    "require": {
+        "logvice/phplogger": "dev-master"
+    }
+}
 ```
 
 ## Basic Usage
