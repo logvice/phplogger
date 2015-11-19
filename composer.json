@@ -9,7 +9,8 @@
         "psr/log": "dev-master"
     },
     "require-dev": {
-        "phpunit/phpunit" : "4.*"
+        "phpunit/phpunit" : "4.*",
+        "jakub-onderka/php-parallel-lint": "0.9"
     },
     "autoload": {
         "psr-4": {
