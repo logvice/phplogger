@@ -35,10 +35,5 @@
       "parallel-lint . --exclude vendor",
       "phpunit"
     ]
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "1.0.0"
-    }
   }
 }
