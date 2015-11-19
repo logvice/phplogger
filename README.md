@@ -32,6 +32,7 @@ $log->error('Foo');
 $log->critical('Bar');
 $log->alert('Foo');
 $log->emergency('Bar');
+$log->log(Logger::ERROR, 'Foo');
 ```
 
 ## About
