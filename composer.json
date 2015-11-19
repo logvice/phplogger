@@ -1,34 +1,44 @@
 {
-    "name": "logvice/phplogger",
-    "description": "Sends your logs to LogVice.com web services or your personal LogVice installation or to a local file.",
-    "type": "library",
-    "keywords": ["logvice", "log", "logging", "psr-3"],
-    "license": "MIT",
-    "require": {
-        "php" : ">=5.4.0",
-        "psr/log": "~1.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit" : "4.*",
-        "jakub-onderka/php-parallel-lint": "0.9"
-    },
-    "autoload": {
-        "psr-4": {
-            "LogVice\\PHPLogger\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "LogVice\\PHPLogger\\": "tests/"
-        }
-    },
-    "provide": {
-        "psr/log-implementation": "1.0.0"
-    },
-    "scripts": {
-        "test": [
-            "parallel-lint . --exclude vendor",
-            "phpunit"
-        ]
+  "name": "logvice/phplogger",
+  "description": "Sends your logs to LogVice.com web services or your personal LogVice installation or to a local file.",
+  "type": "library",
+  "keywords": [
+    "logvice",
+    "log",
+    "logging",
+    "psr-3"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": ">=5.4.0",
+    "psr/log": "~1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.*",
+    "jakub-onderka/php-parallel-lint": "0.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "LogVice\\PHPLogger\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "LogVice\\PHPLogger\\": "tests/"
+    }
+  },
+  "provide": {
+    "psr/log-implementation": "1.0.0"
+  },
+  "scripts": {
+    "test": [
+      "parallel-lint . --exclude vendor",
+      "phpunit"
+    ]
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.0"
+    }
+  }
 }
