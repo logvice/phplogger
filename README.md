@@ -44,4 +44,4 @@ Alban Nikolaos Kora - <ankdeveloper@gmail.com> - <http://twitter.com/albankora>
 
 ### License
 
-PHPLogger is licensed under the MIT License - see the `LICENSE.txt` file for details
+PHPLogger is licensed under the MIT License - see the `LICENSE` file for details
