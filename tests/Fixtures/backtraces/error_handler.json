@@ -1,0 +1,40 @@
+{
+    "file": "/Users/nick/src/Logvice/Logvice-php/testing.php",
+    "line": 22,
+    "backtrace": [
+        {
+            "file": "/Users/nick/src/Logvice/Logvice-php/src/Logvice/Error.php",
+            "line": 116,
+            "function": "generate",
+            "class": "Backtrace"
+        },
+        {
+            "file": "/Users/nick/src/Logvice/Logvice-php/src/Logvice/Error.php",
+            "line": 25,
+            "function": "setPHPError",
+            "class": "Backtrace"
+        },
+        {
+            "file": "/Users/nick/src/Logvice/Logvice-php/src/Logvice/Client.php",
+            "line": 346,
+            "function": "fromPHPError",
+            "class": "Backtrace"
+        },
+        {
+            "file": "/Users/nick/src/Logvice/Logvice-php/testing.php",
+            "line": 22,
+            "function": "errorHandler",
+            "class": "Logvice_Client"
+        },
+        {
+            "file": "/Users/nick/src/Logvice/Logvice-php/testing.php",
+            "line": 13,
+            "function": "crashy_function"
+        },
+        {
+            "file": "/Users/nick/src/Logvice/Logvice-php/testing.php",
+            "line": 25,
+            "function": "parent_of_crashy_function"
+        }
+    ]
+}
