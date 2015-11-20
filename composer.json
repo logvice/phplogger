@@ -4,7 +4,7 @@
   "type": "library",
   "keywords": [
     "logvice",
-    "log",
+    "php logger",
     "logging",
     "psr-3"
   ],
