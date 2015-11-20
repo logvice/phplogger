@@ -2,6 +2,7 @@
 
 [![Author](http://img.shields.io/badge/author-@albankora-blue.svg?style=flat-square)](https://twitter.com/albankora)
 [![Build Status](https://img.shields.io/travis/logvice/phplogger.svg)](https://travis-ci.org/logvice/phplogger)
+[![Coverage Status](https://coveralls.io/repos/logvice/phplogger/badge.svg?branch=master&service=github)](https://coveralls.io/github/logvice/phplogger?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/logvice/phplogger.svg?style=flat-square)](https://packagist.org/packages/logvice/phplogger)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
