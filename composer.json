@@ -33,7 +33,7 @@
   "scripts": {
     "test": [
       "parallel-lint . --exclude vendor",
-      "phpunit"
+      "phpunit --coverage-clover build/logs/clover.xml"
     ]
   }
 }
