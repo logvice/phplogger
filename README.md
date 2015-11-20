@@ -10,7 +10,7 @@ LogVice\PHPLogger sends your logs to LogVice.com service or to your own LogVice 
 
 ## Installation
 
-Install the latest version with
+Install the latest version
 
 ```bash
 {
