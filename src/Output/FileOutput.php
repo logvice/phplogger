@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of \LogVice\PHPLogger package.
- *
- * (c) Alban Nikolaos Kora <ankdeveloper@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE.txt
- * file that was distributed with this source code.
- */
-
 namespace LogVice\PHPLogger\Output;
 
 use LogVice\PHPLogger\Contracts\OutputInterface;
@@ -17,6 +8,7 @@ class FileOutput implements OutputInterface
 {
 
     protected $path = '';
+
     /**
      * Default filename
      */
@@ -77,6 +69,8 @@ class FileOutput implements OutputInterface
     }
 
     /**
+     * Add a new record to the log file
+     *
      * @param string $logData Json Encoded
      * @throws \RuntimeException Unable to write message
      */
