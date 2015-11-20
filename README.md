@@ -1,6 +1,5 @@
 # LogVice\PHPLogger - PHP Logging made easy.
 
-[![Author](http://img.shields.io/badge/author-@albankora-blue.svg?style=flat-square)](https://twitter.com/albankora)
 [![Build Status](https://img.shields.io/travis/logvice/phplogger.svg)](https://travis-ci.org/logvice/phplogger)
 [![Coverage Status](https://coveralls.io/repos/logvice/phplogger/badge.svg?branch=master&service=github)](https://coveralls.io/github/logvice/phplogger?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/logvice/phplogger.svg?style=flat-square)](https://packagist.org/packages/logvice/phplogger)
@@ -26,21 +25,24 @@ Install the latest version
 <?php
 
 use LogVice\PHPLogger\Logger;
+use LogVice\PHPLogger\Output\FileOutput;
 
-// create a log channel
-$log = new Logger('name');
+// create a log instance
+$log = new Logger('channel');
+
+//pass an object or an array of objects for multiple outputs
 $log->setOutputs(new FileOutput('path/to/your/log/directory', 'log'));
 
 // add records to the log file
-$log->debug('Foo');
-$log->info('Bar');
-$log->notice('Foo');
-$log->warning('Bar');
-$log->error('Foo');
-$log->critical('Bar');
-$log->alert('Foo');
-$log->emergency('Bar');
-$log->log(Logger::ERROR, 'Foo');
+$log->debug('foo');
+$log->info('bar');
+$log->notice('foo');
+$log->warning('bar');
+$log->error('foo');
+$log->critical('bar');
+$log->alert('foo');
+$log->emergency('bar');
+$log->log(Logger::ERROR, 'foo');
 ```
 
 ## About
@@ -51,7 +53,7 @@ $log->log(Logger::ERROR, 'Foo');
 
 ### Submitting bugs and feature requests
 
-Bugs and feature request are tracked on [GitHub](https://github.com/logvice/phplogger/issues)
+Bugs and feature request use [GitHub](https://github.com/logvice/phplogger/issues)
 
 ### Author
 
