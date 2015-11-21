@@ -25,7 +25,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Request', $this->request->getClassName());
     }
 
-    public function testEmptyInfo()
+    public function testEmptyMake()
     {
         $expected = [
             'url' => 'http://',
@@ -37,6 +37,9 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             'session' => null,
             'cookie' => null
         ];
+
+        $this->request->make();
+
         $this->assertEquals($expected, $this->request->info());
     }
 
@@ -81,7 +84,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->request->requestHeadersData());
 
         $_SERVER['HTTP_USER_AGENT'] = 'this is a test user agent';
-        $expected['User-Agent'] = 'this is a test user agent';
+        $expected['user_agent'] = 'this is a test user agent';
 
         $this->assertEquals($expected, $this->request->requestHeadersData());
 

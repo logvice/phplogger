@@ -53,7 +53,9 @@ class TCPOutput implements OutputInterface
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $this->timeout);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_VERBOSE, false);
-        curl_setopt($curl, CURLOPT_HTTPHEADER,
+        curl_setopt(
+            $curl,
+            CURLOPT_HTTPHEADER,
             array(
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($logData)

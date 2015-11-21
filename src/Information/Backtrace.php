@@ -7,13 +7,9 @@ class Backtrace extends AbstractInformation
     protected $backtrace;
     protected $traces = array();
 
-    public function info()
+    public function make()
     {
-        $backtrace = $this->getBacktrace();
-
-        return array(
-            'backtrace' => $this->handle($backtrace)
-        );
+        $this->attributes['backtrace'] = $this->handle($this->getBacktrace());
     }
 
     public function getTraces()
@@ -30,22 +26,23 @@ class Backtrace extends AbstractInformation
         $this->composeTrace($backtrace);
 
         if (isset($backtrace['backtrace'])) {
-            foreach ($backtrace['backtrace'] as $rows) {
-                $this->composeTrace($rows);
+            foreach ($backtrace['backtrace'] as $row) {
+                $this->composeTrace($row);
             }
         }
 
         return $this->getTraces();
     }
 
-    protected function composeTrace($rows)
+    protected function composeTrace($row)
     {
-        $file = isset($rows['file']) ? $rows['file'] : null;
-        $line = isset($rows['line']) ? $rows['line'] : null;
-        $function = isset($rows['function']) ? $rows['function'] : null;
-        $class = isset($rows['class']) ? $rows['class'] : null;
+        $data = ['file' => null, 'line' => null, 'function' => null, 'class' => null];
 
-        $this->addTrace($file, $line, $function, $class);
+        foreach ($row as $key => $value) {
+            $data[$key] = $value;
+        }
+
+        $this->addTrace($data['file'], $data['line'], $data['function'], $data['class']);
     }
 
     /**

@@ -38,7 +38,7 @@ class UDPOutput implements OutputInterface
 
         $chunk = $this->header . substr($logData, 0, self::DATAGRAM_MAX_LENGTH - strlen($this->header));
 
-        socket_sendto($this->socket, $chunk, strlen($chunk), $flags = 0, $this->address, $this->port);
+        socket_sendto($this->socket, $chunk, strlen($chunk), 0, $this->address, $this->port);
 
         $this->close();
 

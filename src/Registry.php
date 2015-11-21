@@ -55,7 +55,7 @@ class Registry
             if (false !== ($idx = array_search($logger, self::$loggers, true))) {
                 unset(self::$loggers[$idx]);
             }
-        } else if (array_key_exists($logger, self::$loggers)) {
+        } elseif (array_key_exists($logger, self::$loggers)) {
             unset(self::$loggers[$logger]);
         } else {
             throw new \InvalidArgumentException("Logger with the given name don't exists");
@@ -78,7 +78,7 @@ class Registry
     public static function getInstance($name)
     {
         if (array_key_exists($name, self::$loggers) === false) {
-            throw new \InvalidArgumentException(sprintf('Requested "%s" logger instance is not in the registry', $name));
+            throw new \InvalidArgumentException(sprintf('Logger instance "%s" is not in the registry', $name));
         }
 
         return self::$loggers[$name];

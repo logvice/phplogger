@@ -6,15 +6,9 @@ class Application extends AbstractInformation
 {
     protected $user;
 
-    /*
-     * Get request headers
-     *
-     * @return array
-     */
-
-    public function getUser()
+    public function make()
     {
-        return $this->user;
+        $this->attributes['user'] = $this->user;
     }
 
     /**

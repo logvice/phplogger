@@ -219,7 +219,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'level' => 100,
             'level_name' => 'DEBUG',
             'datetime' => $this->logger->getTimeFormatted(),
-            'extra' => array('FakeInformation' => '')
+            'extra' => array('FakeInformation' => [])
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }

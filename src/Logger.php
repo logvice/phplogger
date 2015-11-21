@@ -426,7 +426,9 @@ class Logger implements LoggerInterface
     public static function getLevelName($level)
     {
         if (array_key_exists($level, static::$levels) === false) {
-            throw new \InvalidArgumentException('Level "' . $level . '" is not inside: ' . implode(', ', array_keys(static::$levels)));
+            throw new \InvalidArgumentException(
+                'Level "' . $level . '" is not inside: ' . implode(', ', array_keys(static::$levels))
+            );
         }
 
         return static::$levels[$level];
