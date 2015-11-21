@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="LOGVICE\PHPLogger" default="build" basedir=".">
+    <property name="basedir" value="${project.basedir}" />
+    <property name="vendorBinDir" value="${basedir}/vendor/bin" />
+    <property name="source" value="${basedir}/src" />
+    <property name="threads" value="4"/>
+
+    <target name="build" depends="clean,try_parallel_tasks,phpunit,phpcb" />
+
+    <target name="clean" description="Clean up and create artifact directories">
+        <delete dir="${basedir}/build/code-browser" />
+        <delete dir="${basedir}/build/coverage" />
+        <delete dir="${basedir}/build/logs" />
+        <mkdir dir="${basedir}/build/code-browser" />
+        <mkdir dir="${basedir}/build/coverage" />
+        <mkdir dir="${basedir}/build/logs" />
+    </target>
+
+    <target name="run_parallel_tasks">
+        <parallel threadCount="${threads}">
+            <phingcall target="tasks_to_try" />
+        </parallel>
+    </target>
+
+    <target name="run_serial_tasks">
+        <phingcall target="tasks_to_try" />
+    </target>
+
+    <target name="tasks_to_try">
+        <phingcall target="phpmd" />
+        <phingcall target="phpcpd" />
+        <phingcall target="phploc" />
+        <phingcall target="phpcs" />
+    </target>
+
+    <!-- # THIS TASK CALL THE ABOVE tasks_to_try and run them in parallel-->
+    <target name="try_parallel_tasks" description="Run the phpmd, phpcpd, phpcs, phpdoc and phploc tasks. Checks for parallel support in PHP.">
+        <exec command="php -m | grep pcntl" returnProperty="pcntl_enabled"/>
+        <if>
+            <equals arg1="${pcntl_enabled}" arg2="pcntl" />
+            <then>
+                <echo message="PCNTL Enabled. Running Taks in parallel with ${threads} threads." />
+                <phingcall target="run_parallel_tasks"/>
+            </then>
+            <else>
+                <echo message="PCNTL is not enabled. Running task serially." />
+                <phingcall target="run_serial_tasks"/>
+            </else>
+        </if>
+    </target>
+	
+    <target name="phpmd" description="Perform project mess detection using PHPMD creating a log file">
+        <exec executable="${vendorBinDir}/phpmd" logoutput="true">
+            <arg path="${source}"/>
+            <arg value="xml"/>
+            <arg value="${project.basedir}/phpmd.xml"/>
+            <arg value="--reportfile"/>
+            <arg value="${project.basedir}/build/logs/pmd.xml"/>
+        </exec>
+    </target>
+
+    <target name="phpcpd" description="Generate pmd-cpd.xml using PHPCPD">
+        <exec logoutput="true" command="${vendorBinDir}/phpcpd --log-pmd ${basedir}/build/logs/pmd-cpd.xml ${source}" />
+    </target>
+
+    <target name="phploc" description="Generate phploc.csv">
+        <exec logoutput="true" command="${vendorBinDir}/phploc --log-csv ${basedir}/build/logs/phploc.csv ${source}" />
+    </target>
+
+    <target name="phpcs" description="Generate checkstyle.xml using PHP_CodeSniffer">
+        <exec executable="${vendorBinDir}/phpcs" logoutput="true">
+            <arg value="--ignore=*/test"/>
+            <arg value="--report=checkstyle"/>
+            <arg value="--report-file=${basedir}/build/logs/checkstyle.xml"/>
+            <arg value="--standard=PSR2"/>
+            <arg value="${source}"/>
+        </exec>
+    </target>
+
+    <target name="phpunit" description="Run unit tests using PHPUnit and generates junit.xml and clover.xml">
+        <exec logoutput="true" command="${vendorBinDir}/phpunit --configuration=phpunit.xml" />
+    </target>
+	
+    <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
+        <exec logoutput="true" command="${vendorBinDir}/phpcb --log ${basedir}/build/logs --source ${source} --output ${basedir}/build/code-browser" />
+    </target>
+</project>
