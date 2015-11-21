@@ -61,7 +61,7 @@ class Logger implements LoggerInterface
     /**
      * @var array
      */
-    protected $logData = array();
+    protected $logData = [];
 
     /**
      * @var string
@@ -76,18 +76,18 @@ class Logger implements LoggerInterface
     /**
      * @var OutputInterface[]
      */
-    protected $outputs = array();
+    protected $outputs = [];
 
     /**
      * @var InformationInterface[]
      */
-    protected $information = array();
+    protected $information = [];
 
     /**
      * Logging levels from syslog protocol defined in RFC 5424
      * @var array
      */
-    protected static $levels = array(
+    protected static $levels = [
         100 => 'DEBUG',
         200 => 'INFO',
         250 => 'NOTICE',
@@ -96,7 +96,7 @@ class Logger implements LoggerInterface
         500 => 'CRITICAL',
         550 => 'ALERT',
         600 => 'EMERGENCY',
-    );
+    ];
 
     /**
      * The level of logs to be collected
@@ -210,7 +210,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return null
      */
-    public function emergency($message, array $context = array())
+    public function emergency($message, array $context = [])
     {
         return $this->output(self::EMERGENCY, $message, $context);
     }
@@ -225,7 +225,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return null
      */
-    public function alert($message, array $context = array())
+    public function alert($message, array $context = [])
     {
         return $this->output(self::ALERT, $message, $context);
     }
@@ -239,7 +239,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return null
      */
-    public function critical($message, array $context = array())
+    public function critical($message, array $context = [])
     {
         return $this->output(self::CRITICAL, $message, $context);
     }
@@ -252,7 +252,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return null
      */
-    public function error($message, array $context = array())
+    public function error($message, array $context = [])
     {
         return $this->output(self::ERROR, $message, $context);
     }
@@ -267,7 +267,7 @@ class Logger implements LoggerInterface
      * @param array $context
      * @return null
      */
-    public function warning($message, array $context = array())
+    public function warning($message, array $context = [])
     {
         return $this->output(self::WARNING, $message, $context);
     }
@@ -280,7 +280,7 @@ class Logger implements LoggerInterface
      *
      * @return null
      */
-    public function notice($message, array $context = array())
+    public function notice($message, array $context = [])
     {
         return $this->output(self::NOTICE, $message, $context);
     }
@@ -295,7 +295,7 @@ class Logger implements LoggerInterface
      *
      * @return null
      */
-    public function info($message, array $context = array())
+    public function info($message, array $context = [])
     {
         return $this->output(self::INFO, $message, $context);
     }
@@ -308,7 +308,7 @@ class Logger implements LoggerInterface
      *
      * @return null
      */
-    public function debug($message, array $context = array())
+    public function debug($message, array $context = [])
     {
         return $this->output(self::DEBUG, $message, $context);
     }
@@ -322,7 +322,7 @@ class Logger implements LoggerInterface
      *
      * @return null
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = [])
     {
         return $this->output($level, $message, $context);
     }
@@ -338,10 +338,10 @@ class Logger implements LoggerInterface
         return $this->output(
             $exception->getCode(),
             $exception->getMessage(),
-            array(
+            [
                 'file' => $exception->getFile(),
                 'line' => $exception->getLine()
-            )
+            ]
         );
     }
 
@@ -356,7 +356,7 @@ class Logger implements LoggerInterface
      */
     public function handleError($errno, $errstr, $errfile = '', $errline = 0)
     {
-        return $this->output($errno, $errstr, array('file' => $errfile, 'line' => $errline));
+        return $this->output($errno, $errstr, ['file' => $errfile, 'line' => $errline]);
     }
 
     /**
@@ -373,7 +373,10 @@ class Logger implements LoggerInterface
             return $this->output(
                 $lastError['type'],
                 $lastError['message'],
-                array('file' => $lastError['file'], 'line' => $lastError['line'])
+                [
+                    'file' => $lastError['file'],
+                    'line' => $lastError['line']
+                ]
             );
         }
 
@@ -389,13 +392,13 @@ class Logger implements LoggerInterface
      * @throws \InvalidArgumentException
      * @return bool
      */
-    protected function output($level, $message, array $context = array())
+    protected function output($level, $message, array $context = [])
     {
         if ($level < $this->logLevel) {
             return false;
         }
 
-        $this->logData = array(
+        $this->logData = [
             'appId' => $this->appId,
             'channel' => $this->channel,
             'message' => (string)$message,
@@ -403,7 +406,7 @@ class Logger implements LoggerInterface
             'level' => $level,
             'level_name' => static::getLevelName($level),
             'datetime' => $this->getDateTimeFormatted(),
-        );
+        ];
 
         foreach ($this->information as $v) {
             $this->logData['extra'][$v->getClassName()] = $v->info();
@@ -427,7 +430,7 @@ class Logger implements LoggerInterface
     {
         if (array_key_exists($level, static::$levels) === false) {
             throw new \InvalidArgumentException(
-                'Level "' . $level . '" is not inside: ' . implode(', ', array_keys(static::$levels))
+                'Level ' . $level . ' is not inside: ' . implode(', ', array_keys(static::$levels))
             );
         }
 
@@ -445,7 +448,7 @@ class Logger implements LoggerInterface
 
         $this->timeFormatted = \DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true)), $timezone)
             ->setTimezone($timezone)
-            ->format("Y-m-d H:i:s");
+            ->format('Y-m-d H:i:s');
 
         return $this->timeFormatted;
     }

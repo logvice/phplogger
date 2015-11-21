@@ -20,7 +20,7 @@ class Request extends AbstractInformation
 
     public function currentUrl()
     {
-        $schema = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") ? "https://" : "http://";
+        $schema = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
         $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
         $uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
         return $schema . $host . $uri;
@@ -75,7 +75,7 @@ class Request extends AbstractInformation
 
     protected function processHeaders()
     {
-        $headers = array();
+        $headers = [];
 
         foreach ($_SERVER as $name => $value) {
             if (substr($name, 0, 5) === 'HTTP_') {

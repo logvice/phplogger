@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nikos
- * Date: 11/14/2015
- * Time: 4:10 PM
- */
 
 namespace LogVice\PHPLogger\Output;
-
 
 class FileOutputTest extends \PHPUnit_Framework_TestCase
 {
@@ -43,7 +36,7 @@ class FileOutputTest extends \PHPUnit_Framework_TestCase
 
     protected function fileLineCount()
     {
-        $f = fopen($this->dir . 'log' . date('_d_m_Y') . '.log', "r", 'rb');
+        $f = fopen($this->dir . 'log' . date('_d_m_Y') . '.log', 'r', 'rb');
         $lines = 0;
 
         while (!feof($f)) {

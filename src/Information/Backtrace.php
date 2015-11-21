@@ -5,7 +5,7 @@ namespace LogVice\PHPLogger\Information;
 class Backtrace extends AbstractInformation
 {
     protected $backtrace;
-    protected $traces = array();
+    protected $traces = [];
 
     public function make()
     {
@@ -55,12 +55,12 @@ class Backtrace extends AbstractInformation
      */
     public function addTrace($file, $line, $function, $class = null)
     {
-        $this->traces[] = array(
+        $this->traces[] = [
             'line' => $line,
             'function' => $function,
             'file' => $file,
             'class' => $class
-        );
+        ];
     }
 
     /**

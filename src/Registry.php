@@ -9,7 +9,7 @@ class Registry
      *
      * @var Logger[]
      */
-    private static $loggers = array();
+    private static $loggers = [];
 
     /**
      * @param Logger $logger
@@ -58,7 +58,7 @@ class Registry
         } elseif (array_key_exists($logger, self::$loggers)) {
             unset(self::$loggers[$logger]);
         } else {
-            throw new \InvalidArgumentException("Logger with the given name don't exists");
+            throw new \InvalidArgumentException('Logger with the given name don\'t exists');
         }
     }
 
@@ -67,7 +67,7 @@ class Registry
      */
     public static function clear()
     {
-        self::$loggers = array();
+        self::$loggers = [];
     }
 
     /**

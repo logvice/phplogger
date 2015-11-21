@@ -72,7 +72,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'appId' => '',
             'channel' => 'test',
             'message' => 'test',
-            'context' => array('test'),
+            'context' => ['test'],
             'level' => 100,
             'level_name' => 'DEBUG',
             'datetime' => $this->logger->getTimeFormatted()
@@ -87,12 +87,18 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'appId' => '',
             'channel' => 'test',
             'message' => 'test',
-            'context' => array('test'),
+            'context' => ['test'],
             'level' => 200,
             'level_name' => 'INFO',
             'datetime' => $this->logger->getTimeFormatted()
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
+    }
+    public function testInfoWithAppId()
+    {
+        $this->logger->setAppId('test');
+        $this->logger->info('test', ['test']);
+        $this->assertEquals('test', $this->logger->getLogData()['appId']);
     }
 
     public function testNotice()
@@ -102,7 +108,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'appId' => '',
             'channel' => 'test',
             'message' => 'test',
-            'context' => array('test'),
+            'context' => ['test'],
             'level' => 250,
             'level_name' => 'NOTICE',
             'datetime' => $this->logger->getTimeFormatted()
@@ -117,7 +123,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'appId' => '',
             'channel' => 'test',
             'message' => 'test',
-            'context' => array('test'),
+            'context' => ['test'],
             'level' => 300,
             'level_name' => 'WARNING',
             'datetime' => $this->logger->getTimeFormatted()
@@ -132,7 +138,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'appId' => '',
             'channel' => 'test',
             'message' => 'test',
-            'context' => array('test'),
+            'context' => ['test'],
             'level' => 400,
             'level_name' => 'ERROR',
             'datetime' => $this->logger->getTimeFormatted()
@@ -147,7 +153,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'appId' => '',
             'channel' => 'test',
             'message' => 'test',
-            'context' => array('test'),
+            'context' => ['test'],
             'level' => 500,
             'level_name' => 'CRITICAL',
             'datetime' => $this->logger->getTimeFormatted()
@@ -162,7 +168,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'appId' => '',
             'channel' => 'test',
             'message' => 'test',
-            'context' => array('test'),
+            'context' => ['test'],
             'level' => 550,
             'level_name' => 'ALERT',
             'datetime' => $this->logger->getTimeFormatted()
@@ -177,7 +183,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'appId' => '',
             'channel' => 'test',
             'message' => 'test',
-            'context' => array('test'),
+            'context' => ['test'],
             'level' => 600,
             'level_name' => 'EMERGENCY',
             'datetime' => $this->logger->getTimeFormatted()
@@ -192,7 +198,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'appId' => '',
             'channel' => 'test',
             'message' => 'test',
-            'context' => array('test'),
+            'context' => ['test'],
             'level' => 100,
             'level_name' => 'DEBUG',
             'datetime' => $this->logger->getTimeFormatted()
@@ -215,11 +221,11 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'appId' => '',
             'channel' => 'test',
             'message' => 'test',
-            'context' => array('test'),
+            'context' => ['test'],
             'level' => 100,
             'level_name' => 'DEBUG',
             'datetime' => $this->logger->getTimeFormatted(),
-            'extra' => array('FakeInformation' => [])
+            'extra' => ['FakeInformation' => []]
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -232,10 +238,10 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'appId' => '',
             'channel' => 'test',
             'message' => 'test',
-            'context' => array(
+            'context' => [
                 'file' => 'test',
                 'line' => 20
-            ),
+            ],
             'level' => 200,
             'level_name' => 'INFO',
             'datetime' => $this->logger->getTimeFormatted()
@@ -258,10 +264,10 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'appId' => '',
             'channel' => 'test',
             'message' => 'test',
-            'context' => array(
+            'context' => [
                 'file' => 'test',
                 'line' => 100,
-            ),
+            ],
             'level' => 200,
             'level_name' => 'INFO',
             'datetime' => $this->logger->getTimeFormatted()
