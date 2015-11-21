@@ -64,7 +64,7 @@ class TCPOutput implements OutputInterface
 
     protected function run()
     {
-        $data = curl_exec($this->curl);
+        curl_exec($this->curl);
         $code = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
 
         if ($code != 200) {

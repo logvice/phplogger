@@ -20,10 +20,21 @@ class Request extends AbstractInformation
 
     public function currentUrl()
     {
-        $schema = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
-        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-        $uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-        return $schema . $host . $uri;
+        $url = 'http://';
+
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+            $url = 'https://';
+        }
+
+        if (isset($_SERVER['HTTP_HOST'])) {
+            $url .= $_SERVER['HTTP_HOST'];
+        }
+
+        if (isset($_SERVER['REQUEST_URI'])) {
+            $url .= $_SERVER['REQUEST_URI'];
+        }
+
+        return $url;
     }
 
     public function requestMethodData()
