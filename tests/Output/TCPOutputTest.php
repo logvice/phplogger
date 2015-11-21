@@ -9,7 +9,7 @@ class TCPOutputTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionIsThrown()
     {
-        $tcpOutput = new TCPOutput('127.0.0.1');
+        $tcpOutput = new TCPOutput('127.0.0.1', 1);
         $this->assertTrue($tcpOutput->send('test'));
     }
 
@@ -18,7 +18,7 @@ class TCPOutputTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionIsThrownWithEmptyString()
     {
-        $tcpOutput = new TCPOutput('');
+        $tcpOutput = new TCPOutput('', 1);
         $tcpOutput->send('test');
     }
 }
