@@ -21,13 +21,13 @@ class Backtrace extends AbstractInformation
 
     public function make()
     {
-        if (empty($traces)) {
-            $traces = debug_backtrace();
+        if (empty($this->traces)) {
+            $this->traces = debug_backtrace();
         }
         // skip first since it's always the current method
-        array_shift($traces);
+        array_shift($this->traces);
         // the call_user_func call is also skipped
-        array_shift($traces);
+        array_shift($this->traces);
 
         return ['info' => $this->handle()];
     }
