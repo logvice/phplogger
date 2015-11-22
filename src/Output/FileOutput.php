@@ -24,19 +24,16 @@ class FileOutput implements OutputInterface
      *
      * @param string $dir The path to the logs directory
      * @param string $name Filename
-     *
-     * @param bool $addDate
+     * @param bool $addDateFileName
      */
-    public function __construct($dir, $name = self::FILE_NAME, $addDate = false)
+    public function __construct($dir, $name = self::FILE_NAME, $addDateFileName = false)
     {
         $this->path = rtrim($dir, '\\/');
         if (!file_exists($this->path)) {
-            if (!mkdir($this->path, 0777)) {
-                throw new \RuntimeException('Unable to create log directory.');
-            }
+            throw new \InvalidArgumentException(sprintf('Directory not found: %s', $this->path));
         }
 
-        $date = $addDate !== false ? date('_d_m_Y') : '';
+        $date = $addDateFileName !== false ? date('_d_m_Y') : '';
 
         $this->path = $this->path . DIRECTORY_SEPARATOR . $name . $date . '.log';
     }
@@ -83,7 +80,7 @@ class FileOutput implements OutputInterface
             sprintf(
                 '[%s] %s: %s%s%s',
                 $logData->datetime,
-                $logData->level_name,
+                $logData->log_level_name,
                 $logData->message,
                 empty($logData->context) ? '' : ' ' . json_encode($logData->context),
                 PHP_EOL

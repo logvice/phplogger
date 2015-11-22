@@ -13,21 +13,25 @@ class FileOutputTest extends \PHPUnit_Framework_TestCase
         $this->fileOutput = new FileOutput($this->dir, 'log', true);
     }
 
-    public function testDirectoryHasBeenCreated()
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testDirectoryDoesNotExist()
     {
-        $this->assertTrue(file_exists($this->dir));
+        $this->dir = __DIR__ . '/../Fixtures/foo/';
+        new FileOutput($this->dir, 'log', true);
     }
 
     public function testFileHasBeenCreated()
     {
-        $logData = json_encode(['level_name' => 'ERROR', 'message' => 'test', 'context' => 'test', 'datetime' => date('d/m/Y h:m:s')]);
+        $logData = json_encode(['log_level_name' => 'ERROR', 'message' => 'test', 'context' => 'test', 'datetime' => date('d/m/Y h:m:s')]);
         $this->fileOutput->send($logData);
         $this->assertTrue(file_exists($this->dir . 'log' . date('_d_m_Y') . '.log'));
     }
 
     public function testLogFileHasContent()
     {
-        $logData = json_encode(['level_name' => 'ERROR', 'message' => 'test', 'context' => 'test', 'datetime' => date('d/m/Y h:m:s')]);
+        $logData = json_encode(['log_level_name' => 'ERROR', 'message' => 'test', 'context' => 'test', 'datetime' => date('d/m/Y h:m:s')]);
         $this->fileOutput->send($logData);
         $this->assertEquals(1, $this->fileLineCount());
         $this->fileOutput->send($logData);
@@ -50,6 +54,5 @@ class FileOutputTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         array_map('unlink', glob("$this->dir/*.*"));
-        rmdir($this->dir);
     }
 }

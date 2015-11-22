@@ -47,14 +47,14 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testErrorNames()
     {
-        $this->assertEquals('DEBUG', Logger::getLevelName(Logger::DEBUG));
-        $this->assertEquals('INFO', Logger::getLevelName(Logger::INFO));
-        $this->assertEquals('NOTICE', Logger::getLevelName(Logger::NOTICE));
-        $this->assertEquals('WARNING', Logger::getLevelName(Logger::WARNING));
-        $this->assertEquals('ERROR', Logger::getLevelName(Logger::ERROR));
-        $this->assertEquals('CRITICAL', Logger::getLevelName(Logger::CRITICAL));
-        $this->assertEquals('ALERT', Logger::getLevelName(Logger::ALERT));
-        $this->assertEquals('EMERGENCY', Logger::getLevelName(Logger::EMERGENCY));
+        $this->assertEquals('DEBUG', $this->logger->getLogLevelName(Logger::DEBUG));
+        $this->assertEquals('INFO', $this->logger->getLogLevelName(Logger::INFO));
+        $this->assertEquals('NOTICE', $this->logger->getLogLevelName(Logger::NOTICE));
+        $this->assertEquals('WARNING', $this->logger->getLogLevelName(Logger::WARNING));
+        $this->assertEquals('ERROR', $this->logger->getLogLevelName(Logger::ERROR));
+        $this->assertEquals('CRITICAL', $this->logger->getLogLevelName(Logger::CRITICAL));
+        $this->assertEquals('ALERT', $this->logger->getLogLevelName(Logger::ALERT));
+        $this->assertEquals('EMERGENCY', $this->logger->getLogLevelName(Logger::EMERGENCY));
     }
 
     /**
@@ -62,7 +62,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidErrorLogName()
     {
-        Logger::getLevelName('test');
+        $this->logger->getLogLevelName('test');
     }
 
     public function testDebug()
@@ -73,8 +73,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'channel' => 'test',
             'message' => 'test',
             'context' => ['test'],
-            'level' => 100,
-            'level_name' => 'DEBUG',
+            'log_level' => 100,
+            'log_level_name' => 'DEBUG',
             'datetime' => $this->logger->getTimeFormatted()
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -88,8 +88,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'channel' => 'test',
             'message' => 'test',
             'context' => ['test'],
-            'level' => 200,
-            'level_name' => 'INFO',
+            'log_level' => 200,
+            'log_level_name' => 'INFO',
             'datetime' => $this->logger->getTimeFormatted()
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -109,8 +109,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'channel' => 'test',
             'message' => 'test',
             'context' => ['test'],
-            'level' => 250,
-            'level_name' => 'NOTICE',
+            'log_level' => 250,
+            'log_level_name' => 'NOTICE',
             'datetime' => $this->logger->getTimeFormatted()
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -124,8 +124,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'channel' => 'test',
             'message' => 'test',
             'context' => ['test'],
-            'level' => 300,
-            'level_name' => 'WARNING',
+            'log_level' => 300,
+            'log_level_name' => 'WARNING',
             'datetime' => $this->logger->getTimeFormatted()
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -139,8 +139,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'channel' => 'test',
             'message' => 'test',
             'context' => ['test'],
-            'level' => 400,
-            'level_name' => 'ERROR',
+            'log_level' => 400,
+            'log_level_name' => 'ERROR',
             'datetime' => $this->logger->getTimeFormatted()
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -154,8 +154,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'channel' => 'test',
             'message' => 'test',
             'context' => ['test'],
-            'level' => 500,
-            'level_name' => 'CRITICAL',
+            'log_level' => 500,
+            'log_level_name' => 'CRITICAL',
             'datetime' => $this->logger->getTimeFormatted()
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -169,8 +169,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'channel' => 'test',
             'message' => 'test',
             'context' => ['test'],
-            'level' => 550,
-            'level_name' => 'ALERT',
+            'log_level' => 550,
+            'log_level_name' => 'ALERT',
             'datetime' => $this->logger->getTimeFormatted()
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -184,8 +184,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'channel' => 'test',
             'message' => 'test',
             'context' => ['test'],
-            'level' => 600,
-            'level_name' => 'EMERGENCY',
+            'log_level' => 600,
+            'log_level_name' => 'EMERGENCY',
             'datetime' => $this->logger->getTimeFormatted()
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -199,8 +199,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'channel' => 'test',
             'message' => 'test',
             'context' => ['test'],
-            'level' => 100,
-            'level_name' => 'DEBUG',
+            'log_level' => 100,
+            'log_level_name' => 'DEBUG',
             'datetime' => $this->logger->getTimeFormatted()
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -222,8 +222,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'channel' => 'test',
             'message' => 'test',
             'context' => ['test'],
-            'level' => 100,
-            'level_name' => 'DEBUG',
+            'log_level' => 100,
+            'log_level_name' => 'DEBUG',
             'datetime' => $this->logger->getTimeFormatted(),
             'extra' => ['FakeInformation' => []]
         ];
@@ -242,8 +242,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
                 'file' => 'test',
                 'line' => 20
             ],
-            'level' => 200,
-            'level_name' => 'INFO',
+            'log_level' => 200,
+            'log_level_name' => 'INFO',
             'datetime' => $this->logger->getTimeFormatted()
         ];
 
@@ -268,8 +268,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
                 'file' => 'test',
                 'line' => 100,
             ],
-            'level' => 200,
-            'level_name' => 'INFO',
+            'log_level' => 400,
+            'log_level_name' => 'ERROR',
             'datetime' => $this->logger->getTimeFormatted()
         ];
 

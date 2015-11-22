@@ -87,7 +87,7 @@ class Logger implements LoggerInterface
      * Logging levels from syslog protocol defined in RFC 5424
      * @var array
      */
-    protected static $levels = [
+    protected $logLevels = [
         100 => 'DEBUG',
         200 => 'INFO',
         250 => 'NOTICE',
@@ -336,7 +336,7 @@ class Logger implements LoggerInterface
     public function handleException(\Exception $exception)
     {
         return $this->output(
-            $exception->getCode(),
+            static::ERROR,
             $exception->getMessage(),
             [
                 'file' => $exception->getFile(),
@@ -356,6 +356,18 @@ class Logger implements LoggerInterface
      */
     public function handleError($errno, $errstr, $errfile = '', $errline = 0)
     {
+        switch ($errno) {
+            case E_USER_ERROR:
+                $errno = static::ERROR;
+                break;
+            case E_USER_WARNING:
+                $errno = static::WARNING;
+                break;
+            case E_USER_NOTICE:
+                $errno = static::NOTICE;
+                break;
+        }
+
         return $this->output($errno, $errstr, ['file' => $errfile, 'line' => $errline]);
     }
 
@@ -367,15 +379,16 @@ class Logger implements LoggerInterface
      */
     public function handleShutdownError()
     {
-        $lastError = error_get_last();
+        $error = error_get_last();
 
-        if (!is_null($lastError)) {
+        if (!is_null($error) && $error['type'] === E_ERROR) {
+
             return $this->output(
-                $lastError['type'],
-                $lastError['message'],
+                static::ERROR,
+                $error['message'],
                 [
-                    'file' => $lastError['file'],
-                    'line' => $lastError['line']
+                    'file' => $error['file'],
+                    'line' => $error['line']
                 ]
             );
         }
@@ -386,15 +399,15 @@ class Logger implements LoggerInterface
     /**
      * Send the log data to registered outputs
      *
-     * @param $level
+     * @param $logLevel
      * @param $message
      * @param array $context
      * @throws \InvalidArgumentException
      * @return bool
      */
-    protected function output($level, $message, array $context = [])
+    protected function output($logLevel, $message, array $context = [])
     {
-        if ($level < $this->logLevel) {
+        if ($logLevel < $this->logLevel) {
             return false;
         }
 
@@ -403,8 +416,8 @@ class Logger implements LoggerInterface
             'channel' => $this->channel,
             'message' => (string)$message,
             'context' => $context,
-            'level' => $level,
-            'level_name' => static::getLevelName($level),
+            'log_level' => $logLevel,
+            'log_level_name' => $this->getLogLevelName($logLevel),
             'datetime' => $this->getDateTimeFormatted(),
         ];
 
@@ -426,19 +439,19 @@ class Logger implements LoggerInterface
      * @return string
      * @throws \InvalidArgumentException
      */
-    public static function getLevelName($level)
+    public function getLogLevelName($level)
     {
-        if (array_key_exists($level, static::$levels) === false) {
+        if (array_key_exists($level, $this->logLevels) === false) {
             throw new \InvalidArgumentException(
-                'Level ' . $level . ' is not inside: ' . implode(', ', array_keys(static::$levels))
+                'Level ' . $level . ' is not inside: ' . implode(', ', array_keys($this->logLevels))
             );
         }
 
-        return static::$levels[$level];
+        return $this->logLevels[$level];
     }
 
     /**
-     * Get datetime on appropriate format
+     * Get date time on appropriate format
      *
      * @return \DateTime
      */
