@@ -34,6 +34,18 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->request->info());
     }
 
+    public function testCurrentUrl(){
+
+        $_SERVER['HTTP_HOST'] = 'test.com';
+        $_SERVER['REQUEST_URI'] = '/test';
+        $this->assertEquals('http://test.com/test', $this->request->currentUrl());
+        $_SERVER['HTTPS'] = 'on';
+        $this->assertEquals('https://test.com/test', $this->request->currentUrl());
+        unset($_SERVER['HTTP_HOST']);
+        unset($_SERVER['REQUEST_URI']);
+        unset($_SERVER['HTTPS']);
+    }
+
     public function testRequestMethod()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';

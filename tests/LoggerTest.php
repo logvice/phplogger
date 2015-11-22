@@ -94,6 +94,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
+
     public function testInfoWithAppId()
     {
         $this->logger->setAppId('test');
@@ -230,9 +231,9 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->logger->getLogData());
     }
 
-    public function testHandleError()
+    public function testHandleErrorNotice()
     {
-        $this->logger->handleError(200, 'test', 'test', 20);
+        $this->logger->handleError(E_USER_NOTICE, 'test', 'test', 20);
 
         $expected = [
             'appId' => '',
@@ -242,8 +243,48 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
                 'file' => 'test',
                 'line' => 20
             ],
-            'log_level' => 200,
-            'log_level_name' => 'INFO',
+            'log_level' => 250,
+            'log_level_name' => 'NOTICE',
+            'datetime' => $this->logger->getTimeFormatted()
+        ];
+
+        $this->assertEquals($expected, $this->logger->getLogData());
+    }
+
+    public function testHandleErrorWarning()
+    {
+        $this->logger->handleError(E_USER_WARNING, 'test', 'test', 20);
+
+        $expected = [
+            'appId' => '',
+            'channel' => 'test',
+            'message' => 'test',
+            'context' => [
+                'file' => 'test',
+                'line' => 20
+            ],
+            'log_level' => 300,
+            'log_level_name' => 'WARNING',
+            'datetime' => $this->logger->getTimeFormatted()
+        ];
+
+        $this->assertEquals($expected, $this->logger->getLogData());
+    }
+
+    public function testHandleError()
+    {
+        $this->logger->handleError(E_USER_ERROR, 'test1', 'test1', 10);
+
+        $expected = [
+            'appId' => '',
+            'channel' => 'test',
+            'message' => 'test1',
+            'context' => [
+                'file' => 'test1',
+                'line' => 10
+            ],
+            'log_level' => 400,
+            'log_level_name' => 'ERROR',
             'datetime' => $this->logger->getTimeFormatted()
         ];
 
@@ -322,6 +363,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testHandleShutdownErrorCall()
     {
-        $this->assertNull($this->logger->handleShutdownError());
+        $result = $this->logger->handleShutdownError();
+        $this->assertNull($result);
     }
 }

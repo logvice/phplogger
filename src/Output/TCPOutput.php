@@ -26,7 +26,9 @@ class TCPOutput implements OutputInterface
     public function send($logData)
     {
         $this->config($logData);
+
         $this->run();
+
         $this->close();
 
         return true;

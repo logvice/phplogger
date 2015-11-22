@@ -78,11 +78,12 @@ class FileOutput implements OutputInterface
         $hasBeenWritten = fwrite(
             $this->file,
             sprintf(
-                '[%s] %s: %s%s%s',
+                '[%s] %s: %s %s %s%s',
                 $logData->datetime,
                 $logData->log_level_name,
                 $logData->message,
                 empty($logData->context) ? '' : ' ' . json_encode($logData->context),
+                empty($logData->extra) ? '' : ' ' . json_encode($logData->extra),
                 PHP_EOL
             )
         );
