@@ -382,7 +382,6 @@ class Logger implements LoggerInterface
         $error = error_get_last();
 
         if (!is_null($error) && $error['type'] === E_ERROR) {
-
             return $this->output(
                 static::ERROR,
                 $error['message'],

@@ -29,8 +29,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             'cookie' => null
         ];
 
-        $this->request->make();
-
         $this->assertEquals($expected, $this->request->info());
     }
 

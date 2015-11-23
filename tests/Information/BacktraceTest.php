@@ -20,8 +20,8 @@ class BacktraceTest extends \PHPUnit_Framework_TestCase
     public function testInfoEmptyBacktrace()
     {
         $this->backtrace->setTraces([]);
-        $data = $this->backtrace->make();
-        $this->assertNotEmpty($data);
+        $data = $this->backtrace->info();
+        $this->assertEmpty($data);
     }
 
     public function testBacktrace()
@@ -34,29 +34,13 @@ class BacktraceTest extends \PHPUnit_Framework_TestCase
                 "type" => "->",
                 "function" => "crashy_function",
                 "args" => "test"
-            ],
-            1 => [
-                "file" => "/Users/nick/src/Logvice/Logvice-php/testing.php",
-                "line" => 13,
-                "class" => "MyClass",
-                "type" => "->",
-                "function" => "crashy_function",
-                "args" => "test"
-            ],
-            2 => [
-                "file" => "/Users/nick/src/Logvice/Logvice-php/testing.php",
-                "line" => 13,
-                "class" => "MyClass",
-                "type" => "->",
-                "function" => "crashy_function",
-                "args" => "test"
             ]
         ];
 
         $this->backtrace->setTraces($traces);
-        $data = $this->backtrace->make();
+        $data = $this->backtrace->info();
 
-        $expected = ['info' => [
+        $expected = [
             0 => [
                 "file" => "/Users/nick/src/Logvice/Logvice-php/testing.php",
                 "line" => 13,
@@ -64,7 +48,7 @@ class BacktraceTest extends \PHPUnit_Framework_TestCase
                 "function" => "crashy_function",
                 "args" => "test"
             ]
-        ]];
+        ];
 
         $this->assertEquals($expected, $data);
     }

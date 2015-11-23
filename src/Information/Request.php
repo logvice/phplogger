@@ -4,9 +4,9 @@ namespace LogVice\PHPLogger\Information;
 
 class Request extends AbstractInformation
 {
-    public function make()
+    public function info()
     {
-        $this->attributes = [
+        return [
             'url' => $this->currentUrl(),
             'method' => $this->requestMethodData(),
             'params' => $this->postParamsData(),

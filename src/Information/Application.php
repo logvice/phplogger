@@ -6,9 +6,11 @@ class Application extends AbstractInformation
 {
     protected $user;
 
-    public function make()
+    public function info()
     {
-        $this->attributes['user'] = $this->user;
+        return [
+            'user' => $this->user,
+        ];
     }
 
     /**

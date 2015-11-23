@@ -10,9 +10,9 @@ class FakeInformation extends AbstractInformation {
      *
      * @return array
      */
-    public function make()
+    public function info()
     {
-        return '';
+        return [];
     }
 
 }

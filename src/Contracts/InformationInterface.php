@@ -10,6 +10,4 @@ interface InformationInterface
      * @return array
      */
     public function info();
-
-    public function make();
 }
