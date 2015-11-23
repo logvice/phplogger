@@ -104,6 +104,16 @@ class Logger implements LoggerInterface
     protected $logLevel;
 
     /**
+     * @var null
+     */
+    protected $backtrace = null;
+
+    /**
+     * @var bool
+     */
+    protected $withBacktrace = false;
+
+    /**
      * @param $channel
      * @param int $logLevel
      */
@@ -111,6 +121,7 @@ class Logger implements LoggerInterface
     {
         $this->channel = $channel;
         $this->logLevel = $logLevel;
+
     }
 
     /**
@@ -120,6 +131,19 @@ class Logger implements LoggerInterface
     {
         $this->appId = $appId;
     }
+
+    /**
+     * @param boolean $withBacktrace
+     */
+    public function withBacktrace($withBacktrace)
+    {
+        if ($withBacktrace) {
+            $this->backtrace = new Backtrace();
+        }
+
+        $this->withBacktrace = $withBacktrace;
+    }
+
 
     /**
      * Set outputs, replacing all existing ones.
@@ -335,6 +359,11 @@ class Logger implements LoggerInterface
      */
     public function handleException(\Exception $exception)
     {
+
+        if ($this->withBacktrace) {
+            $this->backtrace->setTraces($exception->getTrace());
+        }
+
         return $this->output(
             static::ERROR,
             $exception->getMessage(),
@@ -356,19 +385,42 @@ class Logger implements LoggerInterface
      */
     public function handleError($errno, $errstr, $errfile = '', $errline = 0)
     {
+        $errno = $this->formatErrorLevel($errno);
+
+        return $this->output($errno, $errstr, ['file' => $errfile, 'line' => $errline]);
+    }
+
+    protected function formatErrorLevel($errno)
+    {
         switch ($errno) {
+            case E_ERROR:
+            case E_CORE_ERROR:
+                $errno = static::CRITICAL;
+                break;
             case E_USER_ERROR:
+            case E_RECOVERABLE_ERROR:
                 $errno = static::ERROR;
                 break;
+            case E_WARNING:
             case E_USER_WARNING:
+            case E_CORE_WARNING:
+            case E_COMPILE_WARNING:
                 $errno = static::WARNING;
                 break;
+            case E_PARSE:
+            case E_COMPILE_ERROR:
+                $errno = static::ALERT;
+                break;
+            case E_NOTICE:
+            case E_STRICT:
+            case E_DEPRECATED:
             case E_USER_NOTICE:
+            case E_USER_DEPRECATED:
                 $errno = static::NOTICE;
                 break;
         }
 
-        return $this->output($errno, $errstr, ['file' => $errfile, 'line' => $errline]);
+        return $errno;
     }
 
     /**
@@ -419,6 +471,10 @@ class Logger implements LoggerInterface
             'log_level_name' => $this->getLogLevelName($logLevel),
             'datetime' => $this->getDateTimeFormatted(),
         ];
+
+        if ($this->withBacktrace) {
+            $this->logData['extra']['Backtrace'] = $this->backtrace->info();
+        }
 
         foreach ($this->information as $v) {
             $this->logData['extra'][$v->getClassName()] = $v->info();

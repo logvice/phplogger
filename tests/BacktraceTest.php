@@ -1,6 +1,6 @@
 <?php
 
-namespace LogVice\PHPLogger\Information;
+namespace LogVice\PHPLogger;
 
 class BacktraceTest extends \PHPUnit_Framework_TestCase
 {
@@ -10,11 +10,6 @@ class BacktraceTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->backtrace = new Backtrace();
-    }
-
-    public function testClassName()
-    {
-        $this->assertEquals('Backtrace', $this->backtrace->getClassName());
     }
 
     public function testInfoEmptyBacktrace()

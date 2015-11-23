@@ -1,8 +1,8 @@
 <?php
 
-namespace LogVice\PHPLogger\Information;
+namespace LogVice\PHPLogger;
 
-class Backtrace extends AbstractInformation
+class Backtrace
 {
     protected $traces = [];
 
