@@ -41,6 +41,40 @@ $log->emergency('bar');
 $log->log(Logger::ERROR, 'foo');
 ```
 
+## Register Error, Exception and Shutdown handlers
+
+```php
+set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+    $logger = new Core\Adapters\LoggerAdapter('main');
+
+    $logger->setOutputs(
+        new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'error', true)
+    );
+
+    $logger->handleError($errno, $errstr, $errfile, $errline);
+});
+
+set_exception_handler(function ($exception) {
+    $logger = new Core\Adapters\LoggerAdapter('main');
+
+    $logger->setOutputs(
+        new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'exception', true)
+    );
+
+    $logger->handleException($exception);
+});
+
+register_shutdown_function(function () {
+    $logger = new Core\Adapters\LoggerAdapter('main');
+
+    $logger->setOutputs(
+        new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'shutdown', true)
+    );
+
+    $logger->handleShutdownError();
+});
+```
+
 ## About
 
 ### Requirements
