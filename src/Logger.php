@@ -121,19 +121,22 @@ class Logger implements LoggerInterface
     {
         $this->channel = $channel;
         $this->logLevel = $logLevel;
-
     }
 
     /**
      * @param string $appId
+     * @return $this
      */
     public function setAppId($appId)
     {
         $this->appId = $appId;
+
+        return $this;
     }
 
     /**
      * @param boolean $withBacktrace
+     * @return $this
      */
     public function withBacktrace($withBacktrace)
     {
@@ -142,27 +145,33 @@ class Logger implements LoggerInterface
         }
 
         $this->withBacktrace = $withBacktrace;
-    }
 
+        return $this;
+    }
 
     /**
      * Set outputs, replacing all existing ones.
      *
      * @param mixed $outputs
      * @return $this
-     * @throw InvalidArgumentException
      */
     public function setOutputs($outputs)
     {
-        if (is_object($outputs)) {
-            $outputs = [$outputs];
-        }
+        $this->outputs = $this->wrapItToArray($outputs);
 
-        if (!is_array($outputs)) {
-            throw new \InvalidArgumentException('Outputs parameter should be an object or an array');
-        }
+        return $this;
+    }
 
-        $this->outputs = $outputs;
+    /**
+     * Add extra outputs to existing outputs
+     *
+     * @param $outputs
+     * @return $this
+     */
+    public function addOutputs($outputs)
+    {
+        $this->appendUnique($this->outputs, $this->wrapItToArray($outputs));
+
         return $this;
     }
 
@@ -179,20 +188,60 @@ class Logger implements LoggerInterface
      *
      * @param mixed $information
      * @return $this
-     * @throw InvalidArgumentException
      */
     public function setInformation($information)
     {
-        if (is_object($information)) {
-            $information = [$information];
-        }
+        $this->information = $this->wrapItToArray($information);
 
-        if (!is_array($information)) {
-            throw new \InvalidArgumentException('Information parameter should be an object or an array');
-        }
-
-        $this->information = $information;
         return $this;
+    }
+
+    /**
+     * Add extra information object to existing one
+     *
+     * @param $information
+     * @return $this
+     */
+    public function addInformation($information)
+    {
+        $this->appendUnique($this->information, $this->wrapItToArray($information));
+
+        return $this;
+    }
+
+    /**
+     * Append unique values to container array
+     *
+     * @param $container
+     * @param $items
+     */
+    protected function appendUnique($container, $items)
+    {
+        foreach ($items as $row) {
+            if (in_array($row, $container, true)) {
+                array_push($container, $row);
+            }
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @return array
+     * @throw InvalidArgumentException
+     */
+    protected function wrapItToArray($value)
+    {
+        if (is_object($value)) {
+            $value = [$value];
+        }
+
+        if (!is_array($value)) {
+            throw new \InvalidArgumentException(
+                'Parameter should be an object or an array but ' . gettype($value) . ' was passed!'
+            );
+        }
+
+        return $value;
     }
 
     /**
@@ -241,13 +290,12 @@ class Logger implements LoggerInterface
 
     /**
      * Action must be taken immediately.
-     *
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.
      *
      * @param string $message
      * @param array $context
-     * @return null
+     * @return boolean
      */
     public function alert($message, array $context = [])
     {
@@ -256,12 +304,11 @@ class Logger implements LoggerInterface
 
     /**
      * Critical conditions.
-     *
      * Example: Application component unavailable, unexpected exception.
      *
      * @param string $message
      * @param array $context
-     * @return null
+     * @return boolean
      */
     public function critical($message, array $context = [])
     {
@@ -274,7 +321,7 @@ class Logger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     * @return boolean
      */
     public function error($message, array $context = [])
     {
@@ -283,13 +330,12 @@ class Logger implements LoggerInterface
 
     /**
      * Exceptional occurrences that are not errors.
-     *
      * Example: Use of deprecated APIs, poor use of an API, undesirable things
      * that are not necessarily wrong.
      *
      * @param string $message
      * @param array $context
-     * @return null
+     * @return boolean
      */
     public function warning($message, array $context = [])
     {
@@ -301,8 +347,7 @@ class Logger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     *
-     * @return null
+     * @return boolean
      */
     public function notice($message, array $context = [])
     {
@@ -311,13 +356,11 @@ class Logger implements LoggerInterface
 
     /**
      * Interesting events.
-     *
      * Example: User logs in, SQL logs.
      *
      * @param string $message
      * @param array $context
-     *
-     * @return null
+     * @return boolean
      */
     public function info($message, array $context = [])
     {
@@ -329,8 +372,7 @@ class Logger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     *
-     * @return null
+     * @return boolean
      */
     public function debug($message, array $context = [])
     {
@@ -343,8 +385,7 @@ class Logger implements LoggerInterface
      * @param mixed $level
      * @param string $message
      * @param array $context
-     *
-     * @return null
+     * @return boolean
      */
     public function log($level, $message, array $context = [])
     {
@@ -355,7 +396,7 @@ class Logger implements LoggerInterface
      * Exception handler called internally by PHP's set_exception_handler
      *
      * @param \Exception $exception
-     * @return bool
+     * @return boolean
      */
     public function handleException(\Exception $exception)
     {
@@ -381,16 +422,20 @@ class Logger implements LoggerInterface
      * @param string $errstr
      * @param string $errfile
      * @param int $errline
-     * @return mixed
+     * @return boolean
      */
     public function handleError($errno, $errstr, $errfile = '', $errline = 0)
     {
-        $errno = $this->formatErrorLevel($errno);
+        $errno = $this->convertErrorLevel($errno);
 
         return $this->output($errno, $errstr, ['file' => $errfile, 'line' => $errline]);
     }
 
-    protected function formatErrorLevel($errno)
+    /**
+     * @param $errno
+     * @return int
+     */
+    protected function convertErrorLevel($errno)
     {
         switch ($errno) {
             case E_ERROR:
@@ -427,7 +472,7 @@ class Logger implements LoggerInterface
      * shutdown called when the PHP process has finished running
      * should only be called internally by PHP's register_shutdown_function
      *
-     * @return mixed
+     * @return boolean
      */
     public function handleShutdownError()
     {
@@ -444,7 +489,7 @@ class Logger implements LoggerInterface
             );
         }
 
-        return null;
+        return false;
     }
 
     /**
