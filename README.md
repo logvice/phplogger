@@ -45,7 +45,7 @@ $log->log(Logger::ERROR, 'foo');
 
 ```php
 set_error_handler(function ($errno, $errstr, $errfile, $errline) {
-    $logger = new Core\Adapters\LoggerAdapter('main');
+    $logger = new LogVice\PHPLogger\Logger('main');
 
     $logger->setOutputs(
         new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'error', true)
@@ -55,7 +55,7 @@ set_error_handler(function ($errno, $errstr, $errfile, $errline) {
 });
 
 set_exception_handler(function ($exception) {
-    $logger = new Core\Adapters\LoggerAdapter('main');
+    $logger = new LogVice\PHPLogger\Logger('main');
 
     $logger->setOutputs(
         new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'exception', true)
@@ -65,7 +65,7 @@ set_exception_handler(function ($exception) {
 });
 
 register_shutdown_function(function () {
-    $logger = new Core\Adapters\LoggerAdapter('main');
+    $logger = new LogVice\PHPLogger\Logger('main');
 
     $logger->setOutputs(
         new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'shutdown', true)
