@@ -1,8 +1,8 @@
 <?php
 
-namespace LogVice\PHPLogger\Contracts;
+namespace LogVice\PHPLogger\Output;
 
-interface OutputInterface
+interface OutputContract
 {
     /**
      * Writes a message

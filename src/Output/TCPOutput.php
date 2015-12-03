@@ -2,12 +2,21 @@
 
 namespace LogVice\PHPLogger\Output;
 
-use LogVice\PHPLogger\Contracts\OutputInterface;
-
-class TCPOutput implements OutputInterface
+class TCPOutput implements OutputContract
 {
+    /**
+     * @var resource
+     */
     protected $curl;
+
+    /**
+     * @var string
+     */
     protected $address;
+
+    /**
+     * @var int
+     */
     protected $timeout;
 
     public function __construct($address, $timeout = 10)

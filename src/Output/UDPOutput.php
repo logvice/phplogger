@@ -2,15 +2,28 @@
 
 namespace LogVice\PHPLogger\Output;
 
-use LogVice\PHPLogger\Contracts\OutputInterface;
-
-class UDPOutput implements OutputInterface
+class UDPOutput implements OutputContract
 {
     const DATAGRAM_MAX_LENGTH = 65023;
 
+    /**
+     * @var string
+     */
     protected $address;
+
+    /**
+     * @var int
+     */
     protected $port;
+
+    /**
+     * @var string
+     */
     protected $header;
+
+    /**
+     * @var resource
+     */
     protected $socket;
 
     /**

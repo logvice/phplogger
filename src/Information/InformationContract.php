@@ -2,9 +2,7 @@
 
 namespace LogVice\PHPLogger\Information;
 
-use LogVice\PHPLogger\Contracts\InformationInterface;
-
-abstract class AbstractInformation implements InformationInterface
+abstract class InformationContract
 {
     /**
      * @return string
@@ -12,6 +10,12 @@ abstract class AbstractInformation implements InformationInterface
     public function getClassName()
     {
         $path = explode('\\', get_class($this));
+
         return array_pop($path);
     }
+
+    /**
+     * @return array
+     */
+    abstract public function info();
 }

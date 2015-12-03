@@ -2,9 +2,9 @@
 
 namespace LogVice\PHPLogger\Fixtures;
 
-use LogVice\PHPLogger\Contracts\OutputInterface;
+use LogVice\PHPLogger\Output\OutputContract;
 
-class FakeOutput implements OutputInterface
+class FakeOutput implements OutputContract
 {
     /**
      * Writes a message

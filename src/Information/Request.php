@@ -2,7 +2,7 @@
 
 namespace LogVice\PHPLogger\Information;
 
-class Request extends AbstractInformation
+class Request extends InformationContract
 {
     public function info()
     {

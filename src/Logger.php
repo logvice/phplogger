@@ -3,8 +3,6 @@
 namespace LogVice\PHPLogger;
 
 use Psr\Log\LoggerInterface;
-use LogVice\PHPLogger\Contracts\InformationInterface;
-use LogVice\PHPLogger\Contracts\OutputInterface;
 
 class Logger implements LoggerInterface
 {
@@ -54,6 +52,11 @@ class Logger implements LoggerInterface
     protected $appId = '';
 
     /**
+     * @var mixed
+     */
+    protected $user = null;
+
+    /**
      * @var string
      */
     protected $timezone = '';
@@ -74,12 +77,12 @@ class Logger implements LoggerInterface
     protected $timeFormatted = '';
 
     /**
-     * @var OutputInterface[]
+     * @var \LogVice\PHPLogger\Output\OutputContract[]
      */
     protected $outputs = [];
 
     /**
-     * @var InformationInterface[]
+     * @var \LogVice\PHPLogger\Information\InformationContract[]
      */
     protected $information = [];
 
@@ -135,6 +138,14 @@ class Logger implements LoggerInterface
     }
 
     /**
+     * @param null $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
      * @param boolean $withBacktrace
      * @return $this
      */
@@ -170,13 +181,15 @@ class Logger implements LoggerInterface
      */
     public function addOutputs($outputs)
     {
-        $this->appendUnique($this->outputs, $this->wrapItToArray($outputs));
+        $outputs = $this->wrapItToArray($outputs);
+
+        $this->outputs = array_merge($outputs, $this->outputs);
 
         return $this;
     }
 
     /**
-     * @return Contracts\OutputInterface[]
+     * @return Output\OutputContract[]
      */
     public function getOutputs()
     {
@@ -204,24 +217,19 @@ class Logger implements LoggerInterface
      */
     public function addInformation($information)
     {
-        $this->appendUnique($this->information, $this->wrapItToArray($information));
+        $information = $this->wrapItToArray($information);
+
+        $this->information = array_merge($information, $this->information);
 
         return $this;
     }
 
     /**
-     * Append unique values to container array
-     *
-     * @param $container
-     * @param $items
+     * @return Information\InformationContract[]
      */
-    protected function appendUnique($container, $items)
+    public function getInformation()
     {
-        foreach ($items as $row) {
-            if (in_array($row, $container, true)) {
-                array_push($container, $row);
-            }
-        }
+        return $this->information;
     }
 
     /**
@@ -242,14 +250,6 @@ class Logger implements LoggerInterface
         }
 
         return $value;
-    }
-
-    /**
-     * @return Contracts\InformationInterface[]
-     */
-    public function getInformation()
-    {
-        return $this->information;
     }
 
     /**
@@ -432,6 +432,36 @@ class Logger implements LoggerInterface
     }
 
     /**
+     * shutdown called when the PHP process has finished running
+     * should only be called internally by PHP's register_shutdown_function
+     *
+     * @return boolean
+     */
+    public function handleShutdown()
+    {
+        $error = error_get_last();
+
+        if (is_null($error)) {
+            return false;
+        }
+
+        $error['type'] = $this->convertErrorLevel($error['type']);
+
+        if (array_key_exists($error['type'], $this->logLevels)) {
+            return $this->output(
+                $error['type'],
+                $error['message'],
+                [
+                    'file' => $error['file'],
+                    'line' => $error['line']
+                ]
+            );
+        }
+
+        return false;
+    }
+
+    /**
      * @param $errno
      * @return int
      */
@@ -469,30 +499,6 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * shutdown called when the PHP process has finished running
-     * should only be called internally by PHP's register_shutdown_function
-     *
-     * @return boolean
-     */
-    public function handleShutdownError()
-    {
-        $error = error_get_last();
-
-        if (!is_null($error) && $error['type'] === E_ERROR) {
-            return $this->output(
-                static::ERROR,
-                $error['message'],
-                [
-                    'file' => $error['file'],
-                    'line' => $error['line']
-                ]
-            );
-        }
-
-        return false;
-    }
-
-    /**
      * Send the log data to registered outputs
      *
      * @param $logLevel
@@ -512,6 +518,7 @@ class Logger implements LoggerInterface
             'channel' => $this->channel,
             'message' => (string)$message,
             'context' => $context,
+            'user' => $this->user,
             'log_level' => $logLevel,
             'log_level_name' => $this->getLogLevelName($logLevel),
             'datetime' => $this->getDateTimeFormatted(),

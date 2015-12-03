@@ -2,9 +2,7 @@
 
 namespace LogVice\PHPLogger\Output;
 
-use LogVice\PHPLogger\Contracts\OutputInterface;
-
-class FileOutput implements OutputInterface
+class FileOutput implements OutputContract
 {
 
     protected $path = '';

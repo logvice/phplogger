@@ -14,6 +14,11 @@ namespace LogVice\PHPLogger;
 use LogVice\PHPLogger\Fixtures\FakeException;
 use LogVice\PHPLogger\Fixtures\FakeInformation;
 use LogVice\PHPLogger\Fixtures\FakeOutput;
+use LogVice\PHPLogger\Information\Instances;
+use LogVice\PHPLogger\Information\Request;
+use LogVice\PHPLogger\Output\FileOutput;
+use LogVice\PHPLogger\Output\TCPOutput;
+use LogVice\PHPLogger\Output\UDPOutput;
 
 class LoggerTest extends \PHPUnit_Framework_TestCase
 {
@@ -58,12 +63,21 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testInvalidErrorLogName()
     {
         $this->logger->getLogLevelName('test');
     }
+
+    public function testBacktraceHasBeenAdded()
+    {
+        $this->logger->withBacktrace(true);
+        $this->logger->debug('test', ['test']);
+        $data = $this->logger->getLogData();
+        $this->assertArrayHasKey('Backtrace', $data['extra']);
+    }
+
 
     public function testDebug()
     {
@@ -75,7 +89,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'context' => ['test'],
             'log_level' => 100,
             'log_level_name' => 'DEBUG',
-            'datetime' => $this->logger->getTimeFormatted()
+            'datetime' => $this->logger->getTimeFormatted(),
+            'user' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -90,7 +105,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'context' => ['test'],
             'log_level' => 200,
             'log_level_name' => 'INFO',
-            'datetime' => $this->logger->getTimeFormatted()
+            'datetime' => $this->logger->getTimeFormatted(),
+            'user' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -112,7 +128,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'context' => ['test'],
             'log_level' => 250,
             'log_level_name' => 'NOTICE',
-            'datetime' => $this->logger->getTimeFormatted()
+            'datetime' => $this->logger->getTimeFormatted(),
+            'user' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -127,7 +144,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'context' => ['test'],
             'log_level' => 300,
             'log_level_name' => 'WARNING',
-            'datetime' => $this->logger->getTimeFormatted()
+            'datetime' => $this->logger->getTimeFormatted(),
+            'user' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -142,7 +160,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'context' => ['test'],
             'log_level' => 400,
             'log_level_name' => 'ERROR',
-            'datetime' => $this->logger->getTimeFormatted()
+            'datetime' => $this->logger->getTimeFormatted(),
+            'user' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -157,7 +176,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'context' => ['test'],
             'log_level' => 500,
             'log_level_name' => 'CRITICAL',
-            'datetime' => $this->logger->getTimeFormatted()
+            'datetime' => $this->logger->getTimeFormatted(),
+            'user' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -172,7 +192,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'context' => ['test'],
             'log_level' => 550,
             'log_level_name' => 'ALERT',
-            'datetime' => $this->logger->getTimeFormatted()
+            'datetime' => $this->logger->getTimeFormatted(),
+            'user' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -187,7 +208,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'context' => ['test'],
             'log_level' => 600,
             'log_level_name' => 'EMERGENCY',
-            'datetime' => $this->logger->getTimeFormatted()
+            'datetime' => $this->logger->getTimeFormatted(),
+            'user' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -202,7 +224,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'context' => ['test'],
             'log_level' => 100,
             'log_level_name' => 'DEBUG',
-            'datetime' => $this->logger->getTimeFormatted()
+            'datetime' => $this->logger->getTimeFormatted(),
+            'user' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -212,23 +235,6 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->log(100, 'test', ['test']);
         $timeFormatted = $this->logger->getTimeFormatted();
         $this->assertEquals($timeFormatted, date('Y-m-d H:i:s', strtotime($timeFormatted)));
-    }
-
-    public function testInformationAdded()
-    {
-        $this->logger->setInformation([new FakeInformation()]);
-        $this->logger->log(100, 'test', ['test']);
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test',
-            'context' => ['test'],
-            'log_level' => 100,
-            'log_level_name' => 'DEBUG',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'extra' => ['FakeInformation' => []]
-        ];
-        $this->assertEquals($expected, $this->logger->getLogData());
     }
 
     public function testHandleErrorNotice()
@@ -245,7 +251,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             ],
             'log_level' => 250,
             'log_level_name' => 'NOTICE',
-            'datetime' => $this->logger->getTimeFormatted()
+            'datetime' => $this->logger->getTimeFormatted(),
+            'user' => null
         ];
 
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -265,7 +272,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             ],
             'log_level' => 300,
             'log_level_name' => 'WARNING',
-            'datetime' => $this->logger->getTimeFormatted()
+            'datetime' => $this->logger->getTimeFormatted(),
+            'user' => null
         ];
 
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -285,7 +293,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             ],
             'log_level' => 400,
             'log_level_name' => 'ERROR',
-            'datetime' => $this->logger->getTimeFormatted()
+            'datetime' => $this->logger->getTimeFormatted(),
+            'user' => null
         ];
 
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -311,7 +320,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             ],
             'log_level' => 400,
             'log_level_name' => 'ERROR',
-            'datetime' => $this->logger->getTimeFormatted()
+            'datetime' => $this->logger->getTimeFormatted(),
+            'user' => null
         ];
 
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -322,7 +332,6 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $logger = new Logger('test1', Logger::WARNING);
         $result = $logger->info('test', ['test']);
         $this->assertFalse($result);
-
     }
 
     /**
@@ -343,27 +352,47 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $logger->setInformation('test');
     }
 
-    public function testObjectIsPassToOutputAndExceptionIsThrown()
+    public function testOutputWasSet()
     {
-        $logger = new Logger('test1');
-        $logger->setOutputs(new FakeOutput());
-
-        $expected = [new FakeOutput()];
-        $this->assertEquals($expected, $logger->getOutputs());
+        $this->logger->setOutputs(new FakeOutput());
+        $this->assertEquals(1, count($this->logger->getOutputs()));
     }
 
-    public function testObjectIsPassToInformationAndExceptionIsThrown()
+    public function testOutputsWereAdded()
     {
-        $logger = new Logger('test1');
-        $logger->setInformation(new FakeInformation());
+        $this->logger->setOutputs([new FakeOutput()]);
+        $this->logger->addOutputs([new UDPOutput('127.0.0.1')]);
+        $this->logger->addOutputs(new TCPOutput('127.0.0.1'));
+        $this->logger->addOutputs(new FileOutput(__DIR__ . '/Fixtures/logs/'));
 
-        $expected = [new FakeInformation()];
-        $this->assertEquals($expected, $logger->getInformation());
+        $this->assertEquals(4, count($this->logger->getOutputs()));
+    }
+
+    public function testInformationWasSet()
+    {
+        $this->logger->setInformation([new FakeInformation()]);
+        $this->logger->log(100, 'test', ['test']);
+        $data = $this->logger->getLogData();
+        $this->assertArrayHasKey('FakeInformation', $data['extra']);
+    }
+
+    public function testAddAdditionalInformation()
+    {
+        $this->logger->setInformation([new FakeInformation()]);
+        $this->logger->addInformation([new Request()]);
+        $this->logger->addInformation(new Instances());
+
+        $this->logger->log(100, 'test', ['test']);
+        $data = $this->logger->getLogData();
+
+        $this->assertArrayHasKey('FakeInformation', $data['extra']);
+        $this->assertArrayHasKey('Request', $data['extra']);
+        $this->assertArrayHasKey('Instances', $data['extra']);
     }
 
     public function testHandleShutdownErrorCall()
     {
-        $result = $this->logger->handleShutdownError();
-        $this->assertNull($result);
+        $result = $this->logger->handleShutdown();
+        $this->assertFalse($result);
     }
 }

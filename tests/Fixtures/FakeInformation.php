@@ -2,9 +2,10 @@
 
 namespace LogVice\PHPLogger\Fixtures;
 
-use LogVice\PHPLogger\Information\AbstractInformation;
+use LogVice\PHPLogger\Information\InformationContract;
 
-class FakeInformation extends AbstractInformation {
+class FakeInformation extends InformationContract
+{
     /**
      * Return the information
      *
