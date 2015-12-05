@@ -81,6 +81,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testDebug()
     {
+        $this->logger->setUser('foo');
         $this->logger->debug('test', ['test']);
         $expected = [
             'appId' => '',
@@ -90,13 +91,14 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level' => 100,
             'log_level_name' => 'DEBUG',
             'datetime' => $this->logger->getTimeFormatted(),
-            'user' => null
+            'user' => 'foo'
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
 
     public function testInfo()
     {
+        $this->logger->setUser('bar');
         $this->logger->info('test', ['test']);
         $expected = [
             'appId' => '',
@@ -106,7 +108,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level' => 200,
             'log_level_name' => 'INFO',
             'datetime' => $this->logger->getTimeFormatted(),
-            'user' => null
+            'user' => 'bar'
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -327,6 +329,15 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->logger->getLogData());
     }
 
+    public function testExceptionWithBucktrace()
+    {
+        $this->logger->withBacktrace(true);
+        $this->logger->handleException(new FakeException());
+        $logData = $this->logger->getLogData();
+
+        $this->assertArrayHasKey('Backtrace', $logData['extra']);
+    }
+
     public function testOutputLevelIsLargerThanSubmittedOneAndReturnFalse()
     {
         $logger = new Logger('test1', Logger::WARNING);
@@ -394,5 +405,15 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->logger->handleShutdown();
         $this->assertFalse($result);
+    }
+
+    public function testConvertError()
+    {
+        $this->assertEquals(Logger::CRITICAL, $this->logger->convertErrorLevel(E_ERROR));
+        $this->assertEquals(Logger::ERROR, $this->logger->convertErrorLevel(E_USER_ERROR));
+        $this->assertEquals(Logger::WARNING, $this->logger->convertErrorLevel(E_WARNING));
+        $this->assertEquals(Logger::ALERT, $this->logger->convertErrorLevel(E_PARSE));
+        $this->assertEquals(Logger::NOTICE, $this->logger->convertErrorLevel(E_NOTICE));
+        $this->assertEquals(Logger::NOTICE, $this->logger->convertErrorLevel(E_DEPRECATED));
     }
 }

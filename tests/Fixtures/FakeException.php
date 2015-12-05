@@ -35,9 +35,4 @@ class FakeException extends \Exception
     {
         $this->line = $line;
     }
-
-    public function setTrace()
-    {
-
-    }
 }

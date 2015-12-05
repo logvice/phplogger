@@ -225,14 +225,6 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * @return Information\InformationContract[]
-     */
-    public function getInformation()
-    {
-        return $this->information;
-    }
-
-    /**
      * @param mixed $value
      * @return array
      * @throw InvalidArgumentException
@@ -465,7 +457,7 @@ class Logger implements LoggerInterface
      * @param $errno
      * @return int
      */
-    protected function convertErrorLevel($errno)
+    public function convertErrorLevel($errno)
     {
         switch ($errno) {
             case E_ERROR:
