@@ -117,6 +117,11 @@ class Logger implements LoggerInterface
     protected $withBacktrace = false;
 
     /**
+     * @var mixed
+     */
+    protected $stage = null;
+
+    /**
      * @param $channel
      * @param int $logLevel
      */
@@ -127,6 +132,8 @@ class Logger implements LoggerInterface
     }
 
     /**
+     * Set the application ID
+     *
      * @param string $appId
      * @return $this
      */
@@ -138,11 +145,27 @@ class Logger implements LoggerInterface
     }
 
     /**
+     * Set the application stage
+     *
+     * @param mixed $stage
+     * @return $this
+     */
+    public function setStage($stage)
+    {
+        $this->stage = $stage;
+
+        return $this;
+    }
+
+    /**
      * @param null $user
+     * @return $this
      */
     public function setUser($user)
     {
         $this->user = $user;
+
+        return $this;
     }
 
     /**
@@ -508,9 +531,10 @@ class Logger implements LoggerInterface
         $this->logData = [
             'appId' => $this->appId,
             'channel' => $this->channel,
-            'message' => (string)$message,
+            'message' => (string) $message,
             'context' => $context,
             'user' => $this->user,
+            'stage' => $this->stage,
             'log_level' => $logLevel,
             'log_level_name' => $this->getLogLevelName($logLevel),
             'datetime' => $this->getDateTimeFormatted(),
