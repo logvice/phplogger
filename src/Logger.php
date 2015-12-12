@@ -88,6 +88,7 @@ class Logger implements LoggerInterface
 
     /**
      * Logging levels from syslog protocol defined in RFC 5424
+     *
      * @var array
      */
     protected $logLevels = [
@@ -119,7 +120,7 @@ class Logger implements LoggerInterface
     /**
      * @var mixed
      */
-    protected $stage = null;
+    protected $environment = null;
 
     /**
      * @param $channel
@@ -145,19 +146,6 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * Set the application stage
-     *
-     * @param mixed $stage
-     * @return $this
-     */
-    public function setStage($stage)
-    {
-        $this->stage = $stage;
-
-        return $this;
-    }
-
-    /**
      * @param null $user
      * @return $this
      */
@@ -166,6 +154,16 @@ class Logger implements LoggerInterface
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * Set the application environment
+     *
+     * @param mixed $environment
+     */
+    public function setEnvironment($environment)
+    {
+        $this->environment = $environment;
     }
 
     /**
@@ -534,7 +532,7 @@ class Logger implements LoggerInterface
             'message' => (string) $message,
             'context' => $context,
             'user' => $this->user,
-            'stage' => $this->stage,
+            'environment' => $this->environment,
             'log_level' => $logLevel,
             'log_level_name' => $this->getLogLevelName($logLevel),
             'datetime' => $this->getDateTimeFormatted(),

@@ -81,7 +81,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testDebug()
     {
-        $this->logger->setUser('foo')->setStage('baz');
+        $this->logger->setUser('foo')->setEnvironment('baz');
         $this->logger->debug('test', ['test']);
         $expected = [
             'appId' => '',
@@ -92,14 +92,14 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level_name' => 'DEBUG',
             'datetime' => $this->logger->getTimeFormatted(),
             'user' => 'foo',
-            'stage' => 'baz',
+            'environment' => 'baz',
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
 
     public function testInfo()
     {
-        $this->logger->setUser('bar')->setStage('baz');
+        $this->logger->setUser('bar')->setEnvironment('baz');
         $this->logger->info('test', ['test']);
         $expected = [
             'appId' => '',
@@ -110,7 +110,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level_name' => 'INFO',
             'datetime' => $this->logger->getTimeFormatted(),
             'user' => 'bar',
-            'stage' => 'baz',
+            'environment' => 'baz',
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -134,7 +134,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level_name' => 'NOTICE',
             'datetime' => $this->logger->getTimeFormatted(),
             'user' => null,
-            'stage' => null
+            'environment' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -151,7 +151,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level_name' => 'WARNING',
             'datetime' => $this->logger->getTimeFormatted(),
             'user' => null,
-            'stage' => null
+            'environment' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -168,7 +168,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level_name' => 'ERROR',
             'datetime' => $this->logger->getTimeFormatted(),
             'user' => null,
-            'stage' => null
+            'environment' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -185,7 +185,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level_name' => 'CRITICAL',
             'datetime' => $this->logger->getTimeFormatted(),
             'user' => null,
-            'stage' => null
+            'environment' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -202,7 +202,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level_name' => 'ALERT',
             'datetime' => $this->logger->getTimeFormatted(),
             'user' => null,
-            'stage' => null
+            'environment' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -219,7 +219,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level_name' => 'EMERGENCY',
             'datetime' => $this->logger->getTimeFormatted(),
             'user' => null,
-            'stage' => null
+            'environment' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -236,7 +236,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level_name' => 'DEBUG',
             'datetime' => $this->logger->getTimeFormatted(),
             'user' => null,
-            'stage' => null
+            'environment' => null
         ];
         $this->assertEquals($expected, $this->logger->getLogData());
     }
@@ -264,7 +264,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level_name' => 'NOTICE',
             'datetime' => $this->logger->getTimeFormatted(),
             'user' => null,
-            'stage' => null
+            'environment' => null
         ];
 
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -286,7 +286,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level_name' => 'WARNING',
             'datetime' => $this->logger->getTimeFormatted(),
             'user' => null,
-            'stage' => null
+            'environment' => null
         ];
 
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -308,7 +308,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level_name' => 'ERROR',
             'datetime' => $this->logger->getTimeFormatted(),
             'user' => null,
-            'stage' => null
+            'environment' => null
         ];
 
         $this->assertEquals($expected, $this->logger->getLogData());
@@ -336,7 +336,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             'log_level_name' => 'ERROR',
             'datetime' => $this->logger->getTimeFormatted(),
             'user' => null,
-            'stage' => null
+            'environment' => null
         ];
 
         $this->assertEquals($expected, $this->logger->getLogData());
