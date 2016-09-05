@@ -1,21 +1,17 @@
-<?php
+<?php namespace LogVice\PHPLogger;
 
 /*
  * This file is part of \LogVice\PHPLogger package.
  *
- * (c) Alban Nikolaos Kora <ankdeveloper@gmail.com>
+ * (c) Alban Kora <ankdeveloper@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE.txt
  * file that was distributed with this source code.
  */
 
-namespace LogVice\PHPLogger;
-
 use LogVice\PHPLogger\Fixtures\FakeException;
 use LogVice\PHPLogger\Fixtures\FakeInformation;
 use LogVice\PHPLogger\Fixtures\FakeOutput;
-use LogVice\PHPLogger\Information\Instances;
-use LogVice\PHPLogger\Information\Request;
 use LogVice\PHPLogger\Output\FileOutput;
 use LogVice\PHPLogger\Output\TCPOutput;
 use LogVice\PHPLogger\Output\UDPOutput;

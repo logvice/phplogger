@@ -1,4 +1,4 @@
-<?php namespace LogVice\PHPLogger\Output;
+<?php namespace LogVice\PHPLogger;
 
 /*
  * This file is part of \LogVice\PHPLogger package.
@@ -9,14 +9,7 @@
  * file that was distributed with this source code.
  */
 
-interface OutputContract
+class ConfigTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Writes a message
-     *
-     * @param mixed $logData
-     *
-     * @return mixed
-     */
-    public function send($logData);
+
 }

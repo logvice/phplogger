@@ -1,6 +1,13 @@
-<?php
+<?php namespace LogVice\PHPLogger;
 
-namespace LogVice\PHPLogger;
+/*
+ * This file is part of \LogVice\PHPLogger package.
+ *
+ * (c) Alban Kora <ankdeveloper@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE.txt
+ * file that was distributed with this source code.
+ */
 
 use Psr\Log\LoggerInterface;
 
@@ -47,46 +54,6 @@ class Logger implements LoggerInterface
     const EMERGENCY = 600;
 
     /**
-     * @var string
-     */
-    protected $appId = '';
-
-    /**
-     * @var mixed
-     */
-    protected $user = null;
-
-    /**
-     * @var string
-     */
-    protected $timezone = '';
-
-    /**
-     * @var array
-     */
-    protected $logData = [];
-
-    /**
-     * @var string
-     */
-    protected $channel;
-
-    /**
-     * @var string
-     */
-    protected $timeFormatted = '';
-
-    /**
-     * @var \LogVice\PHPLogger\Output\OutputContract[]
-     */
-    protected $outputs = [];
-
-    /**
-     * @var \LogVice\PHPLogger\Information\InformationContract[]
-     */
-    protected $information = [];
-
-    /**
      * Logging levels from syslog protocol defined in RFC 5424
      *
      * @var array
@@ -103,190 +70,29 @@ class Logger implements LoggerInterface
     ];
 
     /**
-     * The level of logs to be collected
+     * @var Config $config
      */
-    protected $logLevel;
+    private $config;
 
     /**
-     * @var null
+     * @var Backtrace
      */
-    protected $backtrace = null;
+    private $backtrace;
 
     /**
-     * @var bool
+     * @var array
      */
-    protected $withBacktrace = false;
+    private $logData = [];
 
     /**
-     * @var mixed
-     */
-    protected $environment = null;
-
-    /**
-     * @param $channel
-     * @param int $logLevel
-     */
-    public function __construct($channel = 'main', $logLevel = self::DEBUG)
-    {
-        $this->channel = $channel;
-        $this->logLevel = $logLevel;
-    }
-
-    /**
-     * Set the application ID
+     * Logger constructor.
      *
-     * @param string $appId
-     * @return $this
+     * @param Config $config
      */
-    public function setAppId($appId)
+    public function __construct(Config $config)
     {
-        $this->appId = $appId;
-
-        return $this;
-    }
-
-    /**
-     * @param null $user
-     * @return $this
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Set the application environment
-     *
-     * @param mixed $environment
-     */
-    public function setEnvironment($environment)
-    {
-        $this->environment = $environment;
-    }
-
-    /**
-     * @param boolean $withBacktrace
-     * @return $this
-     */
-    public function withBacktrace($withBacktrace)
-    {
-        if ($withBacktrace) {
-            $this->backtrace = new Backtrace();
-        }
-
-        $this->withBacktrace = $withBacktrace;
-
-        return $this;
-    }
-
-    /**
-     * Set outputs, replacing all existing ones.
-     *
-     * @param mixed $outputs
-     * @return $this
-     */
-    public function setOutputs($outputs)
-    {
-        $this->outputs = $this->wrapItToArray($outputs);
-
-        return $this;
-    }
-
-    /**
-     * Add extra outputs to existing outputs
-     *
-     * @param $outputs
-     * @return $this
-     */
-    public function addOutputs($outputs)
-    {
-        $outputs = $this->wrapItToArray($outputs);
-
-        $this->outputs = array_merge($outputs, $this->outputs);
-
-        return $this;
-    }
-
-    /**
-     * @return Output\OutputContract[]
-     */
-    public function getOutputs()
-    {
-        return $this->outputs;
-    }
-
-    /**
-     * Set information, replacing all existing ones.
-     *
-     * @param mixed $information
-     * @return $this
-     */
-    public function setInformation($information)
-    {
-        $this->information = $this->wrapItToArray($information);
-
-        return $this;
-    }
-
-    /**
-     * Add extra information object to existing one
-     *
-     * @param $information
-     * @return $this
-     */
-    public function addInformation($information)
-    {
-        $information = $this->wrapItToArray($information);
-
-        $this->information = array_merge($information, $this->information);
-
-        return $this;
-    }
-
-    /**
-     * @param mixed $value
-     * @return array
-     * @throw InvalidArgumentException
-     */
-    protected function wrapItToArray($value)
-    {
-        if (is_object($value)) {
-            $value = [$value];
-        }
-
-        if (!is_array($value)) {
-            throw new \InvalidArgumentException(
-                'Parameter should be an object or an array but ' . gettype($value) . ' was passed!'
-            );
-        }
-
-        return $value;
-    }
-
-    /**
-     * @return array
-     */
-    public function getLogData()
-    {
-        return $this->logData;
-    }
-
-    /**
-     * @return string
-     */
-    public function getChannel()
-    {
-        return $this->channel;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTimeFormatted()
-    {
-        return $this->timeFormatted;
+        $this->config = $config;
+        $this->backtrace = new Backtrace();
     }
 
     /**
@@ -414,7 +220,7 @@ class Logger implements LoggerInterface
     public function handleException(\Exception $exception)
     {
 
-        if ($this->withBacktrace) {
+        if ($this->config->isTrace()) {
             $this->backtrace->setTraces($exception->getTrace());
         }
 
@@ -522,31 +328,25 @@ class Logger implements LoggerInterface
      */
     protected function output($logLevel, $message, array $context = [])
     {
-        if ($logLevel < $this->logLevel) {
+        if ($logLevel < $this->config->getLogLevel()) {
             return false;
         }
 
         $this->logData = [
-            'appId' => $this->appId,
-            'channel' => $this->channel,
+            'appId' => $this->config->getAppId(),
+            'channel' => $this->config->getChannel(),
+            'environment' => $this->config->getEnvironment(),
             'message' => (string) $message,
             'context' => $context,
-            'user' => $this->user,
-            'environment' => $this->environment,
             'log_level' => $logLevel,
             'log_level_name' => $this->getLogLevelName($logLevel),
-            'datetime' => $this->getDateTimeFormatted(),
+            'session' => $this->config->getSessionValues(),
+            'request' => $this->config->getRequestValues(),
+            'trace' => $this->config->isTrace() ? $this->backtrace->info() : '',
+            'datetime' => $this->config->getDateTimeFormatted(),
         ];
 
-        if ($this->withBacktrace) {
-            $this->logData['extra']['Backtrace'] = $this->backtrace->info();
-        }
-
-        foreach ($this->information as $v) {
-            $this->logData['extra'][$v->getClassName()] = $v->info();
-        }
-
-        foreach ($this->outputs as $v) {
+        foreach ($this->config->getOutputHandlers() as $v) {
             $v->send(json_encode($this->logData));
         }
 
@@ -572,18 +372,10 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * Get date time on appropriate format
-     *
-     * @return \DateTime
+     * @return array
      */
-    protected function getDateTimeFormatted()
+    public function getLogData()
     {
-        $timezone = new \DateTimeZone(date_default_timezone_get() ?: 'UTC');
-
-        $this->timeFormatted = \DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true)), $timezone)
-            ->setTimezone($timezone)
-            ->format('Y-m-d H:i:s');
-
-        return $this->timeFormatted;
+        return $this->logData;
     }
 }
