@@ -24,7 +24,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->config->setAppId('b85066fc-248f-4ea9-b13d-0858dbf4efc1')
             ->setEnvironment('DEV')
             ->setChannel('php-test')
-            ->setCollectorUrl('127.0.0.1')
             ->setSessionValues(['user'])
             ->setOutputHandlers([new FakeOutput()])
             ->setLogLevel(Logger::DEBUG)

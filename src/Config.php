@@ -29,21 +29,6 @@ class Config
     private $channel = 'PHP-Logs';
 
     /**
-     * @var string
-     */
-    private $collectorUrl = 'https://collector.logvice.com';
-
-    /**
-     * @var int
-     */
-    private $UDPPort = 514;
-
-    /**
-     * @var int
-     */
-    private $TCPPort = 80;
-
-    /**
      * @var \LogVice\PHPLogger\Output\OutputContract[]
      */
     private $outputHandlers = [];
@@ -136,72 +121,6 @@ class Config
         }
 
         $this->channel = $channel;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCollectorUrl()
-    {
-        return $this->collectorUrl;
-    }
-
-    /**
-     * @param $collectorUrl
-     * @return $this
-     */
-    public function setCollectorUrl($collectorUrl)
-    {
-        if (!is_string($collectorUrl)) {
-            throw new \InvalidArgumentException();
-        }
-
-        $this->collectorUrl = $collectorUrl;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUDPPort()
-    {
-        return $this->UDPPort;
-    }
-
-    /**
-     * @param $UDPPort
-     * @return $this
-     */
-    public function setUDPPort($UDPPort)
-    {
-        if (!is_int($UDPPort)) {
-            throw new \InvalidArgumentException();
-        }
-
-        $this->UDPPort = $UDPPort;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTCPPort()
-    {
-        return $this->TCPPort;
-    }
-
-    /**
-     * @param $TCPPort
-     * @return $this
-     */
-    public function setTCPPort($TCPPort)
-    {
-        if (!is_int($TCPPort)) {
-            throw new \InvalidArgumentException();
-        }
-
-        $this->TCPPort = $TCPPort;
         return $this;
     }
 
