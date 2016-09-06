@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+use LogVice\PHPLogger\Output\OutputContract;
+
 class Config
 {
     /**
@@ -85,7 +87,7 @@ class Config
      */
     public function setAppId($appId)
     {
-        if (!is_string($appId)) {
+        if (!is_string($appId) && !(preg_match('/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/', $appId))) {
             throw new \InvalidArgumentException();
         }
 
@@ -212,16 +214,25 @@ class Config
     }
 
     /**
-     * @param $outputHandlers
+     * @param array $outputHandlers
      * @return $this
      */
-    public function setOutputHandlers($outputHandlers)
+    public function setOutputHandlers(array $outputHandlers)
     {
+        $this->outputHandlers = [];
+
         if (!is_array($outputHandlers)) {
             throw new \InvalidArgumentException();
         }
 
-        $this->outputHandlers = $outputHandlers;
+        foreach ($outputHandlers as $output) {
+            if (!$output instanceof OutputContract) {
+                throw new \InvalidArgumentException();
+            }
+
+            $this->outputHandlers[] = $output;
+        }
+
         return $this;
     }
 
@@ -244,10 +255,10 @@ class Config
     }
 
     /**
-     * @param $sessionValues
+     * @param array $sessionValues
      * @return $this
      */
-    public function setSessionValues($sessionValues)
+    public function setSessionValues(array $sessionValues)
     {
         if (!is_array($sessionValues)) {
             throw new \InvalidArgumentException();
@@ -276,10 +287,10 @@ class Config
     }
 
     /**
-     * @param $requestValues
+     * @param array $requestValues
      * @return $this
      */
-    public function setRequestValues($requestValues)
+    public function setRequestValues(array $requestValues)
     {
         if (!is_array($requestValues)) {
             throw new \InvalidArgumentException();

@@ -9,12 +9,8 @@
  * file that was distributed with this source code.
  */
 
-use LogVice\PHPLogger\Fixtures\FakeException;
-use LogVice\PHPLogger\Fixtures\FakeInformation;
 use LogVice\PHPLogger\Fixtures\FakeOutput;
-use LogVice\PHPLogger\Output\FileOutput;
-use LogVice\PHPLogger\Output\TCPOutput;
-use LogVice\PHPLogger\Output\UDPOutput;
+use LogVice\PHPLogger\Fixtures\FakeException;
 
 class LoggerTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,16 +19,27 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
      */
     private $logger;
 
+    /**
+     * @var Config
+     */
+    private $config;
+
     protected function setUp()
     {
-        $this->logger = new Logger('test', 'test');
-        $this->logger->setOutputs([new FakeOutput()]);
+        $this->config = new Config();
+        $this->config->setAppId('b85066fc-248f-4ea9-b13d-0858dbf4efc1')
+            ->setEnvironment('DEV')
+            ->setChannel('php-test')
+            ->setCollectorUrl('127.0.0.1')
+            ->setSessionValues(['foo'])
+            ->setOutputHandlers([new FakeOutput()])
+            ->setLogLevel(Logger::DEBUG)
+            ->setTrace(true)
+            ->setRequestValues(['REQUEST_URI']);
+
+        $this->logger = new Logger($this->config);
     }
 
-    public function testChannelName()
-    {
-        $this->assertEquals('test', $this->logger->getChannel());
-    }
 
     public function testErrorIds()
     {
@@ -68,246 +75,299 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testBacktraceHasBeenAdded()
     {
-        $this->logger->withBacktrace(true);
         $this->logger->debug('test', ['test']);
         $data = $this->logger->getLogData();
-        $this->assertArrayHasKey('Backtrace', $data['extra']);
+        $this->assertArrayHasKey('trace', $data);
     }
 
 
     public function testDebug()
     {
-        $this->logger->setUser('foo')->setEnvironment('baz');
+
         $this->logger->debug('test', ['test']);
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test',
-            'context' => ['test'],
-            'log_level' => 100,
-            'log_level_name' => 'DEBUG',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'user' => 'foo',
-            'environment' => 'baz',
-        ];
-        $this->assertEquals($expected, $this->logger->getLogData());
+        $data = $this->logger->getLogData();
+
+        $this->assertArrayHasKey('appId', $data);
+        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('channel', $data);
+        $this->assertEquals($data['channel'], 'php-test');
+        $this->assertArrayHasKey('environment', $data);
+        $this->assertEquals($data['environment'], 'DEV');
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals($data['message'], 'test');
+        $this->assertArrayHasKey('context', $data);
+        $this->assertEquals($data['context'],  ['test']);
+        $this->assertArrayHasKey('log_level', $data);
+        $this->assertEquals($data['log_level'], Logger::DEBUG);
+        $this->assertArrayHasKey('log_level_name', $data);
+        $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::DEBUG));
+        $this->assertArrayHasKey('request', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('datetime', $data);
     }
 
     public function testInfo()
     {
-        $this->logger->setUser('bar')->setEnvironment('baz');
         $this->logger->info('test', ['test']);
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test',
-            'context' => ['test'],
-            'log_level' => 200,
-            'log_level_name' => 'INFO',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'user' => 'bar',
-            'environment' => 'baz',
-        ];
-        $this->assertEquals($expected, $this->logger->getLogData());
-    }
+        $data = $this->logger->getLogData();
 
-    public function testInfoWithAppId()
-    {
-        $this->logger->setAppId('test');
-        $this->logger->info('test', ['test']);
-        $this->assertEquals('test', $this->logger->getLogData()['appId']);
+        $this->assertArrayHasKey('appId', $data);
+        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('channel', $data);
+        $this->assertEquals($data['channel'], 'php-test');
+        $this->assertArrayHasKey('environment', $data);
+        $this->assertEquals($data['environment'], 'DEV');
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals($data['message'], 'test');
+        $this->assertArrayHasKey('context', $data);
+        $this->assertEquals($data['context'],  ['test']);
+        $this->assertArrayHasKey('log_level', $data);
+        $this->assertEquals($data['log_level'], Logger::INFO);
+        $this->assertArrayHasKey('log_level_name', $data);
+        $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::INFO));
+        $this->assertArrayHasKey('request', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('datetime', $data);
     }
 
     public function testNotice()
     {
         $this->logger->notice('test', ['test']);
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test',
-            'context' => ['test'],
-            'log_level' => 250,
-            'log_level_name' => 'NOTICE',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'user' => null,
-            'environment' => null
-        ];
-        $this->assertEquals($expected, $this->logger->getLogData());
+        $data = $this->logger->getLogData();
+
+        $this->assertArrayHasKey('appId', $data);
+        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('channel', $data);
+        $this->assertEquals($data['channel'], 'php-test');
+        $this->assertArrayHasKey('environment', $data);
+        $this->assertEquals($data['environment'], 'DEV');
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals($data['message'], 'test');
+        $this->assertArrayHasKey('context', $data);
+        $this->assertEquals($data['context'],  ['test']);
+        $this->assertArrayHasKey('log_level', $data);
+        $this->assertEquals($data['log_level'], Logger::NOTICE);
+        $this->assertArrayHasKey('log_level_name', $data);
+        $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::NOTICE));
+        $this->assertArrayHasKey('request', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('datetime', $data);
     }
 
     public function testWarning()
     {
         $this->logger->warning('test', ['test']);
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test',
-            'context' => ['test'],
-            'log_level' => 300,
-            'log_level_name' => 'WARNING',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'user' => null,
-            'environment' => null
-        ];
-        $this->assertEquals($expected, $this->logger->getLogData());
+        $data = $this->logger->getLogData();
+
+        $this->assertArrayHasKey('appId', $data);
+        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('channel', $data);
+        $this->assertEquals($data['channel'], 'php-test');
+        $this->assertArrayHasKey('environment', $data);
+        $this->assertEquals($data['environment'], 'DEV');
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals($data['message'], 'test');
+        $this->assertArrayHasKey('context', $data);
+        $this->assertEquals($data['context'],  ['test']);
+        $this->assertArrayHasKey('log_level', $data);
+        $this->assertEquals($data['log_level'], Logger::WARNING);
+        $this->assertArrayHasKey('log_level_name', $data);
+        $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::WARNING));
+        $this->assertArrayHasKey('request', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('datetime', $data);
     }
 
     public function testError()
     {
         $this->logger->error('test', ['test']);
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test',
-            'context' => ['test'],
-            'log_level' => 400,
-            'log_level_name' => 'ERROR',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'user' => null,
-            'environment' => null
-        ];
-        $this->assertEquals($expected, $this->logger->getLogData());
+        $data = $this->logger->getLogData();
+
+        $this->assertArrayHasKey('appId', $data);
+        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('channel', $data);
+        $this->assertEquals($data['channel'], 'php-test');
+        $this->assertArrayHasKey('environment', $data);
+        $this->assertEquals($data['environment'], 'DEV');
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals($data['message'], 'test');
+        $this->assertArrayHasKey('context', $data);
+        $this->assertEquals($data['context'],  ['test']);
+        $this->assertArrayHasKey('log_level', $data);
+        $this->assertEquals($data['log_level'], Logger::ERROR);
+        $this->assertArrayHasKey('log_level_name', $data);
+        $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::ERROR));
+        $this->assertArrayHasKey('request', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('datetime', $data);
     }
 
     public function testCritical()
     {
         $this->logger->critical('test', ['test']);
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test',
-            'context' => ['test'],
-            'log_level' => 500,
-            'log_level_name' => 'CRITICAL',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'user' => null,
-            'environment' => null
-        ];
-        $this->assertEquals($expected, $this->logger->getLogData());
+        $data = $this->logger->getLogData();
+
+        $this->assertArrayHasKey('appId', $data);
+        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('channel', $data);
+        $this->assertEquals($data['channel'], 'php-test');
+        $this->assertArrayHasKey('environment', $data);
+        $this->assertEquals($data['environment'], 'DEV');
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals($data['message'], 'test');
+        $this->assertArrayHasKey('context', $data);
+        $this->assertEquals($data['context'],  ['test']);
+        $this->assertArrayHasKey('log_level', $data);
+        $this->assertEquals($data['log_level'], Logger::CRITICAL);
+        $this->assertArrayHasKey('log_level_name', $data);
+        $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::CRITICAL));
+        $this->assertArrayHasKey('request', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('datetime', $data);
     }
 
     public function testAlert()
     {
         $this->logger->alert('test', ['test']);
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test',
-            'context' => ['test'],
-            'log_level' => 550,
-            'log_level_name' => 'ALERT',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'user' => null,
-            'environment' => null
-        ];
-        $this->assertEquals($expected, $this->logger->getLogData());
+        $data = $this->logger->getLogData();
+
+        $this->assertArrayHasKey('appId', $data);
+        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('channel', $data);
+        $this->assertEquals($data['channel'], 'php-test');
+        $this->assertArrayHasKey('environment', $data);
+        $this->assertEquals($data['environment'], 'DEV');
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals($data['message'], 'test');
+        $this->assertArrayHasKey('context', $data);
+        $this->assertEquals($data['context'],  ['test']);
+        $this->assertArrayHasKey('log_level', $data);
+        $this->assertEquals($data['log_level'], Logger::ALERT);
+        $this->assertArrayHasKey('log_level_name', $data);
+        $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::ALERT));
+        $this->assertArrayHasKey('request', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('datetime', $data);
     }
 
     public function testEmergency()
     {
         $this->logger->emergency('test', ['test']);
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test',
-            'context' => ['test'],
-            'log_level' => 600,
-            'log_level_name' => 'EMERGENCY',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'user' => null,
-            'environment' => null
-        ];
-        $this->assertEquals($expected, $this->logger->getLogData());
+        $data = $this->logger->getLogData();
+
+        $this->assertArrayHasKey('appId', $data);
+        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('channel', $data);
+        $this->assertEquals($data['channel'], 'php-test');
+        $this->assertArrayHasKey('environment', $data);
+        $this->assertEquals($data['environment'], 'DEV');
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals($data['message'], 'test');
+        $this->assertArrayHasKey('context', $data);
+        $this->assertEquals($data['context'],  ['test']);
+        $this->assertArrayHasKey('log_level', $data);
+        $this->assertEquals($data['log_level'], Logger::EMERGENCY);
+        $this->assertArrayHasKey('log_level_name', $data);
+        $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::EMERGENCY));
+        $this->assertArrayHasKey('request', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('datetime', $data);
     }
 
     public function testLog()
     {
-        $this->logger->log(100, 'test', ['test']);
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test',
-            'context' => ['test'],
-            'log_level' => 100,
-            'log_level_name' => 'DEBUG',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'user' => null,
-            'environment' => null
-        ];
-        $this->assertEquals($expected, $this->logger->getLogData());
-    }
+        $this->logger->log(Logger::DEBUG, 'test', ['test']);
+        $data = $this->logger->getLogData();
 
-    public function testTimeFormatted()
-    {
-        $this->logger->log(100, 'test', ['test']);
-        $timeFormatted = $this->logger->getTimeFormatted();
-        $this->assertEquals($timeFormatted, date('Y-m-d H:i:s', strtotime($timeFormatted)));
+        $this->assertArrayHasKey('appId', $data);
+        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('channel', $data);
+        $this->assertEquals($data['channel'], 'php-test');
+        $this->assertArrayHasKey('environment', $data);
+        $this->assertEquals($data['environment'], 'DEV');
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals($data['message'], 'test');
+        $this->assertArrayHasKey('context', $data);
+        $this->assertEquals($data['context'],  ['test']);
+        $this->assertArrayHasKey('log_level', $data);
+        $this->assertEquals($data['log_level'], Logger::DEBUG);
+        $this->assertArrayHasKey('log_level_name', $data);
+        $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::DEBUG));
+        $this->assertArrayHasKey('request', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('datetime', $data);
     }
 
     public function testHandleErrorNotice()
     {
         $this->logger->handleError(E_USER_NOTICE, 'test', 'test', 20);
+        $data = $this->logger->getLogData();
 
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test',
-            'context' => [
-                'file' => 'test',
-                'line' => 20
-            ],
-            'log_level' => 250,
-            'log_level_name' => 'NOTICE',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'user' => null,
-            'environment' => null
-        ];
-
-        $this->assertEquals($expected, $this->logger->getLogData());
+        $this->assertArrayHasKey('appId', $data);
+        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('channel', $data);
+        $this->assertEquals($data['channel'], 'php-test');
+        $this->assertArrayHasKey('environment', $data);
+        $this->assertEquals($data['environment'], 'DEV');
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals($data['message'], 'test');
+        $this->assertArrayHasKey('context', $data);
+        $this->assertEquals($data['context'], ['file' => 'test','line' => 20]);
+        $this->assertArrayHasKey('log_level', $data);
+        $this->assertEquals($data['log_level'], Logger::NOTICE);
+        $this->assertArrayHasKey('log_level_name', $data);
+        $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::NOTICE));
+        $this->assertArrayHasKey('request', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('datetime', $data);
     }
 
     public function testHandleErrorWarning()
     {
         $this->logger->handleError(E_USER_WARNING, 'test', 'test', 20);
+        $data = $this->logger->getLogData();
 
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test',
-            'context' => [
-                'file' => 'test',
-                'line' => 20
-            ],
-            'log_level' => 300,
-            'log_level_name' => 'WARNING',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'user' => null,
-            'environment' => null
-        ];
-
-        $this->assertEquals($expected, $this->logger->getLogData());
+        $this->assertArrayHasKey('appId', $data);
+        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('channel', $data);
+        $this->assertEquals($data['channel'], 'php-test');
+        $this->assertArrayHasKey('environment', $data);
+        $this->assertEquals($data['environment'], 'DEV');
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals($data['message'], 'test');
+        $this->assertArrayHasKey('context', $data);
+        $this->assertEquals($data['context'],  ['file' => 'test','line' => 20]);
+        $this->assertArrayHasKey('log_level', $data);
+        $this->assertEquals($data['log_level'], Logger::WARNING);
+        $this->assertArrayHasKey('log_level_name', $data);
+        $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::WARNING));
+        $this->assertArrayHasKey('request', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('datetime', $data);
     }
 
     public function testHandleError()
     {
         $this->logger->handleError(E_USER_ERROR, 'test1', 'test1', 10);
+        $data = $this->logger->getLogData();
 
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test1',
-            'context' => [
-                'file' => 'test1',
-                'line' => 10
-            ],
-            'log_level' => 400,
-            'log_level_name' => 'ERROR',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'user' => null,
-            'environment' => null
-        ];
-
-        $this->assertEquals($expected, $this->logger->getLogData());
+        $this->assertArrayHasKey('appId', $data);
+        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('channel', $data);
+        $this->assertEquals($data['channel'], 'php-test');
+        $this->assertArrayHasKey('environment', $data);
+        $this->assertEquals($data['environment'], 'DEV');
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals($data['message'], 'test1');
+        $this->assertArrayHasKey('context', $data);
+        $this->assertEquals($data['context'],  ['file' => 'test1','line' => 10]);
+        $this->assertArrayHasKey('log_level', $data);
+        $this->assertEquals($data['log_level'], Logger::ERROR);
+        $this->assertArrayHasKey('log_level_name', $data);
+        $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::ERROR));
+        $this->assertArrayHasKey('request', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('datetime', $data);
     }
 
     public function testException()
@@ -319,95 +379,37 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $exception->setLine(100);
 
         $this->logger->handleException($exception);
+        $data = $this->logger->getLogData();
 
-        $expected = [
-            'appId' => '',
-            'channel' => 'test',
-            'message' => 'test',
-            'context' => [
-                'file' => 'test',
-                'line' => 100,
-            ],
-            'log_level' => 400,
-            'log_level_name' => 'ERROR',
-            'datetime' => $this->logger->getTimeFormatted(),
-            'user' => null,
-            'environment' => null
-        ];
-
-        $this->assertEquals($expected, $this->logger->getLogData());
+        $this->assertArrayHasKey('appId', $data);
+        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('channel', $data);
+        $this->assertEquals($data['channel'], 'php-test');
+        $this->assertArrayHasKey('environment', $data);
+        $this->assertEquals($data['environment'], 'DEV');
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals($data['message'], 'test');
+        $this->assertArrayHasKey('context', $data);
+        $this->assertEquals($data['context'],  ['file' => 'test','line' => 100]);
+        $this->assertArrayHasKey('log_level', $data);
+        $this->assertEquals($data['log_level'], Logger::ERROR);
+        $this->assertArrayHasKey('log_level_name', $data);
+        $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::ERROR));
+        $this->assertArrayHasKey('request', $data);
+        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('datetime', $data);
     }
 
-    public function testExceptionWithBucktrace()
-    {
-        $this->logger->withBacktrace(true);
-        $this->logger->handleException(new FakeException());
-        $logData = $this->logger->getLogData();
-
-        $this->assertArrayHasKey('Backtrace', $logData['extra']);
-    }
 
     public function testOutputLevelIsLargerThanSubmittedOneAndReturnFalse()
     {
-        $logger = new Logger('test1', Logger::WARNING);
+        $config = new Config();
+        $config->setAppId('b85066fc-248f-4ea9-b13d-0858dbf4efc1')
+            ->setLogLevel(Logger::ERROR);
+
+        $logger = new Logger($config);
         $result = $logger->info('test', ['test']);
         $this->assertFalse($result);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testStringIsPassToOutputAndExceptionIsThrown()
-    {
-        $logger = new Logger('test1');
-        $logger->setOutputs('test');
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testStringIsPassToInformationAndExceptionIsThrown()
-    {
-        $logger = new Logger('test1');
-        $logger->setInformation('test');
-    }
-
-    public function testOutputWasSet()
-    {
-        $this->logger->setOutputs(new FakeOutput());
-        $this->assertEquals(1, count($this->logger->getOutputs()));
-    }
-
-    public function testOutputsWereAdded()
-    {
-        $this->logger->setOutputs([new FakeOutput()]);
-        $this->logger->addOutputs([new UDPOutput('127.0.0.1')]);
-        $this->logger->addOutputs(new TCPOutput('127.0.0.1'));
-        $this->logger->addOutputs(new FileOutput(__DIR__ . '/Fixtures/logs/'));
-
-        $this->assertEquals(4, count($this->logger->getOutputs()));
-    }
-
-    public function testInformationWasSet()
-    {
-        $this->logger->setInformation([new FakeInformation()]);
-        $this->logger->log(100, 'test', ['test']);
-        $data = $this->logger->getLogData();
-        $this->assertArrayHasKey('FakeInformation', $data['extra']);
-    }
-
-    public function testAddAdditionalInformation()
-    {
-        $this->logger->setInformation([new FakeInformation()]);
-        $this->logger->addInformation([new Request()]);
-        $this->logger->addInformation(new Instances());
-
-        $this->logger->log(100, 'test', ['test']);
-        $data = $this->logger->getLogData();
-
-        $this->assertArrayHasKey('FakeInformation', $data['extra']);
-        $this->assertArrayHasKey('Request', $data['extra']);
-        $this->assertArrayHasKey('Instances', $data['extra']);
     }
 
     public function testHandleShutdownErrorCall()
