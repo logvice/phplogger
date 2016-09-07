@@ -86,8 +86,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->debug('test', ['test']);
         $data = $this->logger->getLogData();
 
-        $this->assertArrayHasKey('appId', $data);
-        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('app_id', $data);
+        $this->assertEquals($data['app_id'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -102,7 +102,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::DEBUG));
         $this->assertArrayHasKey('request', $data);
         $this->assertArrayHasKey('trace', $data);
-        $this->assertArrayHasKey('datetime', $data);
+        $this->assertArrayHasKey('created_at', $data);
     }
 
     public function testInfo()
@@ -110,8 +110,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->info('test', ['test']);
         $data = $this->logger->getLogData();
 
-        $this->assertArrayHasKey('appId', $data);
-        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('app_id', $data);
+        $this->assertEquals($data['app_id'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -126,7 +126,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::INFO));
         $this->assertArrayHasKey('request', $data);
         $this->assertArrayHasKey('trace', $data);
-        $this->assertArrayHasKey('datetime', $data);
+        $this->assertArrayHasKey('created_at', $data);
     }
 
     public function testNotice()
@@ -134,8 +134,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->notice('test', ['test']);
         $data = $this->logger->getLogData();
 
-        $this->assertArrayHasKey('appId', $data);
-        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('app_id', $data);
+        $this->assertEquals($data['app_id'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -150,7 +150,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::NOTICE));
         $this->assertArrayHasKey('request', $data);
         $this->assertArrayHasKey('trace', $data);
-        $this->assertArrayHasKey('datetime', $data);
+        $this->assertArrayHasKey('created_at', $data);
     }
 
     public function testWarning()
@@ -158,8 +158,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->warning('test', ['test']);
         $data = $this->logger->getLogData();
 
-        $this->assertArrayHasKey('appId', $data);
-        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('app_id', $data);
+        $this->assertEquals($data['app_id'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -174,7 +174,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::WARNING));
         $this->assertArrayHasKey('request', $data);
         $this->assertArrayHasKey('trace', $data);
-        $this->assertArrayHasKey('datetime', $data);
+        $this->assertArrayHasKey('created_at', $data);
     }
 
     public function testError()
@@ -182,8 +182,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->error('test', ['test']);
         $data = $this->logger->getLogData();
 
-        $this->assertArrayHasKey('appId', $data);
-        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('app_id', $data);
+        $this->assertEquals($data['app_id'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -198,7 +198,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::ERROR));
         $this->assertArrayHasKey('request', $data);
         $this->assertArrayHasKey('trace', $data);
-        $this->assertArrayHasKey('datetime', $data);
+        $this->assertArrayHasKey('created_at', $data);
     }
 
     public function testCritical()
@@ -206,8 +206,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->critical('test', ['test']);
         $data = $this->logger->getLogData();
 
-        $this->assertArrayHasKey('appId', $data);
-        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('app_id', $data);
+        $this->assertEquals($data['app_id'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -222,7 +222,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::CRITICAL));
         $this->assertArrayHasKey('request', $data);
         $this->assertArrayHasKey('trace', $data);
-        $this->assertArrayHasKey('datetime', $data);
+        $this->assertArrayHasKey('created_at', $data);
     }
 
     public function testAlert()
@@ -230,8 +230,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->alert('test', ['test']);
         $data = $this->logger->getLogData();
 
-        $this->assertArrayHasKey('appId', $data);
-        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('app_id', $data);
+        $this->assertEquals($data['app_id'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -246,7 +246,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::ALERT));
         $this->assertArrayHasKey('request', $data);
         $this->assertArrayHasKey('trace', $data);
-        $this->assertArrayHasKey('datetime', $data);
+        $this->assertArrayHasKey('created_at', $data);
     }
 
     public function testEmergency()
@@ -254,8 +254,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->emergency('test', ['test']);
         $data = $this->logger->getLogData();
 
-        $this->assertArrayHasKey('appId', $data);
-        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('app_id', $data);
+        $this->assertEquals($data['app_id'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -270,7 +270,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::EMERGENCY));
         $this->assertArrayHasKey('request', $data);
         $this->assertArrayHasKey('trace', $data);
-        $this->assertArrayHasKey('datetime', $data);
+        $this->assertArrayHasKey('created_at', $data);
     }
 
     public function testLog()
@@ -278,8 +278,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->log(Logger::DEBUG, 'test', ['test']);
         $data = $this->logger->getLogData();
 
-        $this->assertArrayHasKey('appId', $data);
-        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('app_id', $data);
+        $this->assertEquals($data['app_id'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -294,7 +294,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::DEBUG));
         $this->assertArrayHasKey('request', $data);
         $this->assertArrayHasKey('trace', $data);
-        $this->assertArrayHasKey('datetime', $data);
+        $this->assertArrayHasKey('created_at', $data);
     }
 
     public function testHandleErrorNotice()
@@ -302,8 +302,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->handleError(E_USER_NOTICE, 'test', 'test', 20);
         $data = $this->logger->getLogData();
 
-        $this->assertArrayHasKey('appId', $data);
-        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('app_id', $data);
+        $this->assertEquals($data['app_id'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -318,7 +318,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::NOTICE));
         $this->assertArrayHasKey('request', $data);
         $this->assertArrayHasKey('trace', $data);
-        $this->assertArrayHasKey('datetime', $data);
+        $this->assertArrayHasKey('created_at', $data);
     }
 
     public function testHandleErrorWarning()
@@ -326,8 +326,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->handleError(E_USER_WARNING, 'test', 'test', 20);
         $data = $this->logger->getLogData();
 
-        $this->assertArrayHasKey('appId', $data);
-        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('app_id', $data);
+        $this->assertEquals($data['app_id'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -342,7 +342,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::WARNING));
         $this->assertArrayHasKey('request', $data);
         $this->assertArrayHasKey('trace', $data);
-        $this->assertArrayHasKey('datetime', $data);
+        $this->assertArrayHasKey('created_at', $data);
     }
 
     public function testHandleError()
@@ -350,8 +350,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->handleError(E_USER_ERROR, 'test1', 'test1', 10);
         $data = $this->logger->getLogData();
 
-        $this->assertArrayHasKey('appId', $data);
-        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('app_id', $data);
+        $this->assertEquals($data['app_id'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -366,7 +366,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::ERROR));
         $this->assertArrayHasKey('request', $data);
         $this->assertArrayHasKey('trace', $data);
-        $this->assertArrayHasKey('datetime', $data);
+        $this->assertArrayHasKey('created_at', $data);
     }
 
     public function testException()
@@ -380,8 +380,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->logger->handleException($exception);
         $data = $this->logger->getLogData();
 
-        $this->assertArrayHasKey('appId', $data);
-        $this->assertEquals($data['appId'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->assertArrayHasKey('app_id', $data);
+        $this->assertEquals($data['app_id'], 'b85066fc-248f-4ea9-b13d-0858dbf4efc1');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -396,7 +396,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::ERROR));
         $this->assertArrayHasKey('request', $data);
         $this->assertArrayHasKey('trace', $data);
-        $this->assertArrayHasKey('datetime', $data);
+        $this->assertArrayHasKey('created_at', $data);
     }
 
 

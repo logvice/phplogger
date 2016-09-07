@@ -333,7 +333,7 @@ class Logger implements LoggerInterface
         }
 
         $this->logData = [
-            'appId' => $this->config->getAppId(),
+            'app_id' => $this->config->getAppId(),
             'channel' => $this->config->getChannel(),
             'environment' => $this->config->getEnvironment(),
             'message' => (string) $message,
@@ -343,7 +343,7 @@ class Logger implements LoggerInterface
             'session' => $this->config->getSessionValues(),
             'request' => $this->config->getRequestValues(),
             'trace' => $this->config->isTrace() ? $this->backtrace->info() : '',
-            'datetime' => $this->config->getDateTimeFormatted(),
+            'created_at' => $this->config->getDateTimeFormatted(),
         ];
 
         foreach ($this->config->getOutputHandlers() as $v) {

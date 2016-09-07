@@ -59,7 +59,7 @@ class Config
     protected $timeFormatted = '';
 
     /**
-     * @return mixed
+     * @return string UUID
      */
     public function getAppId()
     {
@@ -67,12 +67,12 @@ class Config
     }
 
     /**
-     * @param $appId
+     * @param string $appId
      * @return $this
      */
     public function setAppId($appId)
     {
-        if (!is_string($appId) && !(preg_match('/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/', $appId))) {
+        if (!is_string($appId) || !preg_match('/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/', $appId)) {
             throw new \InvalidArgumentException();
         }
 
@@ -140,10 +140,6 @@ class Config
     {
         $this->outputHandlers = [];
 
-        if (!is_array($outputHandlers)) {
-            throw new \InvalidArgumentException();
-        }
-
         foreach ($outputHandlers as $output) {
             if (!$output instanceof OutputContract) {
                 throw new \InvalidArgumentException();
@@ -165,7 +161,7 @@ class Config
         if (!empty($this->sessionValues)) {
             foreach ($this->sessionValues as $sessionKey) {
                 if (isset($_SESSION[$sessionKey])) {
-                    $session[] = $_SESSION[$sessionKey];
+                    $session[$sessionKey] = $_SESSION[$sessionKey];
                 }
             }
         }
@@ -179,10 +175,6 @@ class Config
      */
     public function setSessionValues(array $sessionValues)
     {
-        if (!is_array($sessionValues)) {
-            throw new \InvalidArgumentException();
-        }
-
         $this->sessionValues = $sessionValues;
         return $this;
     }
@@ -197,7 +189,7 @@ class Config
         if (!empty($this->requestValues)) {
             foreach ($this->requestValues as $requestKey) {
                 if (isset($_REQUEST[$requestKey])) {
-                    $request[] = $_REQUEST[$requestKey];
+                    $request[$requestKey] = $_REQUEST[$requestKey];
                 }
             }
         }
@@ -211,10 +203,6 @@ class Config
      */
     public function setRequestValues(array $requestValues)
     {
-        if (!is_array($requestValues)) {
-            throw new \InvalidArgumentException();
-        }
-
         $this->requestValues = $requestValues;
         return $this;
     }
