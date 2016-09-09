@@ -148,5 +148,15 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $values['user']);
     }
 
+    public function testServerValues()
+    {
+        $_SERVER['SERVER_ADDR'] = 'foo';
 
+        $this->config->setServerValues(['SERVER_ADDR']);
+
+        $values = $this->config->getServerValues();
+
+        $this->assertArrayHasKey('SERVER_ADDR', $values);
+        $this->assertEquals('foo', $values['SERVER_ADDR']);
+    }
 }

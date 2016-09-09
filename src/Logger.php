@@ -342,6 +342,7 @@ class Logger implements LoggerInterface
             'log_level_name' => $this->getLogLevelName($logLevel),
             'session' => $this->config->getSessionValues(),
             'request' => $this->config->getRequestValues(),
+            'server' => $this->config->getServerValues(),
             'trace' => $this->config->isTrace() ? $this->backtrace->info() : '',
             'created_at' => $this->config->getDateTimeFormatted(),
         ];

@@ -44,6 +44,11 @@ class Config
     private $requestValues = [];
 
     /**
+     * @var array
+     */
+    private $serverValues = [];
+
+    /**
      * @var bool
      */
     private $trace = false;
@@ -205,6 +210,32 @@ class Config
     {
         $this->requestValues = $requestValues;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getServerValues()
+    {
+        $server = [];
+
+        if (!empty($this->serverValues)) {
+            foreach ($this->serverValues as $key) {
+                if (isset($_SERVER[$key])) {
+                    $server[$key] = $_SERVER[$key];
+                }
+            }
+        }
+
+        return $server;
+    }
+
+    /**
+     * @param array $serverValues
+     */
+    public function setServerValues(array $serverValues)
+    {
+        $this->serverValues = $serverValues;
     }
 
     /**
