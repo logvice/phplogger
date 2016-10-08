@@ -55,31 +55,60 @@ $log->log(Logger::ERROR, 'foo');
 
 ```php
 set_error_handler(function ($errno, $errstr, $errfile, $errline) {
-    $logger = new LogVice\PHPLogger\Logger('main');
+    // create a config instance
+    $config = new LogVice\PHPLogger\Config();
+    $config->setAppId('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
+    $config->setEnvironment('dev');
+    $config->setChannel('php');
+    $config->setOutputHandlers([
+        new LogVice\PHPLogger\Output\TCPOutput('127.0.0.1', '8080'),
+        new LogVice\PHPLogger\Output\UDPOutput('127.0.0.1', '514'),
+        new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'file-name', true)
+    ]);
+    $config->setLogLevel(Logger::DEBUG);
 
-    $logger->setOutputs(
-        new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'error', true)
-    );
+    // create a log instance
+    $logger = new LogVice\PHPLogger\Logger($config);
 
     $logger->handleError($errno, $errstr, $errfile, $errline);
 });
 
 set_exception_handler(function ($exception) {
-    $logger = new LogVice\PHPLogger\Logger('main');
+    // create a config instance
+    $config = new LogVice\PHPLogger\Config();
+    $config->setAppId('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
+    $config->setEnvironment('dev');
+    $config->setChannel('php');
+    $config->setOutputHandlers([
+        new LogVice\PHPLogger\Output\TCPOutput('127.0.0.1', '8080'),
+        new LogVice\PHPLogger\Output\UDPOutput('127.0.0.1', '514'),
+        new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'file-name', true)
+    ]);
+    $config->setLogLevel(Logger::DEBUG);
 
-    $logger->setOutputs(
-        new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'exception', true)
-    );
+    // create a log instance
+    $logger = new LogVice\PHPLogger\Logger($config);
 
     $logger->handleException($exception);
 });
 
 register_shutdown_function(function () {
-    $logger = new LogVice\PHPLogger\Logger('main');
+    // create a config instance
+    $config = new LogVice\PHPLogger\Config();
+    $config->setAppId('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
+    $config->setEnvironment('dev');
+    $config->setChannel('php');
+    $config->setOutputHandlers([
+        new LogVice\PHPLogger\Output\TCPOutput('127.0.0.1', '8080'),
+        new LogVice\PHPLogger\Output\UDPOutput('127.0.0.1', '514'),
+        new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'file-name', true)
+    ]);
+    $config->setLogLevel(Logger::DEBUG);
 
-    $logger->setOutputs(
-        new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'shutdown', true)
-    );
+    // create a log instance
+    $logger = new LogVice\PHPLogger\Logger($config);
+
+    $logger->handleException($exception);
 
     $logger->handleShutdownError();
 });
@@ -97,7 +126,7 @@ Bugs and feature request use [GitHub](https://github.com/logvice/phplogger/issue
 
 ### Author
 
-Alban Nikolaos Kora - <ankdeveloper@gmail.com> - <http://twitter.com/albankora>
+Alban Kora - <ankdeveloper@gmail.com> - <http://twitter.com/albankora>
 
 ### License
 
