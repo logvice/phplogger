@@ -108,8 +108,6 @@ register_shutdown_function(function () {
     // create a log instance
     $logger = new LogVice\PHPLogger\Logger($config);
 
-    $logger->handleException($exception);
-
     $logger->handleShutdownError();
 });
 ```
