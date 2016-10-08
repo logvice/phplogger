@@ -33,7 +33,7 @@ class Backtrace
 
     public function info()
     {
-        if (!$this->active) {
+        if ($this->active === false) {
             return '';
         }
 

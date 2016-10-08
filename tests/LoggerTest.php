@@ -33,7 +33,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
             ->setSessionValues(['foo'])
             ->setOutputHandlers([new FakeOutput()])
             ->setLogLevel(Logger::DEBUG)
-            ->setTrace(true)
+            ->activateTrace(true)
             ->setRequestValues(['REQUEST_URI']);
 
         $this->logger = new Logger($this->config);
@@ -76,7 +76,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $this->logger->debug('test', ['test']);
         $data = $this->logger->getLogData();
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('trace', $data['extras']);
     }
 
 
@@ -95,13 +95,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($data['message'], 'test');
         $this->assertArrayHasKey('context', $data);
-        $this->assertEquals($data['context'],  ['test']);
+        $this->assertEquals($data['context'],  json_encode(['test']));
         $this->assertArrayHasKey('log_level', $data);
         $this->assertEquals($data['log_level'], Logger::DEBUG);
         $this->assertArrayHasKey('log_level_name', $data);
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::DEBUG));
-        $this->assertArrayHasKey('request', $data);
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
 
@@ -119,13 +118,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($data['message'], 'test');
         $this->assertArrayHasKey('context', $data);
-        $this->assertEquals($data['context'],  ['test']);
+        $this->assertEquals($data['context'],  json_encode(['test']));
         $this->assertArrayHasKey('log_level', $data);
         $this->assertEquals($data['log_level'], Logger::INFO);
         $this->assertArrayHasKey('log_level_name', $data);
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::INFO));
-        $this->assertArrayHasKey('request', $data);
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
 
@@ -143,13 +141,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($data['message'], 'test');
         $this->assertArrayHasKey('context', $data);
-        $this->assertEquals($data['context'],  ['test']);
+        $this->assertEquals($data['context'],  json_encode(['test']));
         $this->assertArrayHasKey('log_level', $data);
         $this->assertEquals($data['log_level'], Logger::NOTICE);
         $this->assertArrayHasKey('log_level_name', $data);
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::NOTICE));
-        $this->assertArrayHasKey('request', $data);
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
 
@@ -167,13 +164,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($data['message'], 'test');
         $this->assertArrayHasKey('context', $data);
-        $this->assertEquals($data['context'],  ['test']);
+        $this->assertEquals($data['context'],  json_encode(['test']));
         $this->assertArrayHasKey('log_level', $data);
         $this->assertEquals($data['log_level'], Logger::WARNING);
         $this->assertArrayHasKey('log_level_name', $data);
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::WARNING));
-        $this->assertArrayHasKey('request', $data);
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
 
@@ -191,13 +187,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($data['message'], 'test');
         $this->assertArrayHasKey('context', $data);
-        $this->assertEquals($data['context'],  ['test']);
+        $this->assertEquals($data['context'],  json_encode(['test']));
         $this->assertArrayHasKey('log_level', $data);
         $this->assertEquals($data['log_level'], Logger::ERROR);
         $this->assertArrayHasKey('log_level_name', $data);
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::ERROR));
-        $this->assertArrayHasKey('request', $data);
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
 
@@ -215,13 +210,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($data['message'], 'test');
         $this->assertArrayHasKey('context', $data);
-        $this->assertEquals($data['context'],  ['test']);
+        $this->assertEquals($data['context'],  json_encode(['test']));
         $this->assertArrayHasKey('log_level', $data);
         $this->assertEquals($data['log_level'], Logger::CRITICAL);
         $this->assertArrayHasKey('log_level_name', $data);
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::CRITICAL));
-        $this->assertArrayHasKey('request', $data);
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
 
@@ -239,13 +233,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($data['message'], 'test');
         $this->assertArrayHasKey('context', $data);
-        $this->assertEquals($data['context'],  ['test']);
+        $this->assertEquals($data['context'],  json_encode(['test']));
         $this->assertArrayHasKey('log_level', $data);
         $this->assertEquals($data['log_level'], Logger::ALERT);
         $this->assertArrayHasKey('log_level_name', $data);
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::ALERT));
-        $this->assertArrayHasKey('request', $data);
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
 
@@ -263,13 +256,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($data['message'], 'test');
         $this->assertArrayHasKey('context', $data);
-        $this->assertEquals($data['context'],  ['test']);
+        $this->assertEquals($data['context'],  json_encode(['test']));
         $this->assertArrayHasKey('log_level', $data);
         $this->assertEquals($data['log_level'], Logger::EMERGENCY);
         $this->assertArrayHasKey('log_level_name', $data);
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::EMERGENCY));
-        $this->assertArrayHasKey('request', $data);
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
 
@@ -287,13 +279,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($data['message'], 'test');
         $this->assertArrayHasKey('context', $data);
-        $this->assertEquals($data['context'],  ['test']);
+        $this->assertEquals($data['context'],  json_encode(['test']));
         $this->assertArrayHasKey('log_level', $data);
         $this->assertEquals($data['log_level'], Logger::DEBUG);
         $this->assertArrayHasKey('log_level_name', $data);
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::DEBUG));
-        $this->assertArrayHasKey('request', $data);
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
 
@@ -311,13 +302,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($data['message'], 'test');
         $this->assertArrayHasKey('context', $data);
-        $this->assertEquals($data['context'], ['file' => 'test','line' => 20]);
+        $this->assertEquals($data['context'], json_encode(['file' => 'test','line' => 20]));
         $this->assertArrayHasKey('log_level', $data);
         $this->assertEquals($data['log_level'], Logger::NOTICE);
         $this->assertArrayHasKey('log_level_name', $data);
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::NOTICE));
-        $this->assertArrayHasKey('request', $data);
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
 
@@ -335,13 +325,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($data['message'], 'test');
         $this->assertArrayHasKey('context', $data);
-        $this->assertEquals($data['context'],  ['file' => 'test','line' => 20]);
+        $this->assertEquals($data['context'],  json_encode(['file' => 'test','line' => 20]));
         $this->assertArrayHasKey('log_level', $data);
         $this->assertEquals($data['log_level'], Logger::WARNING);
         $this->assertArrayHasKey('log_level_name', $data);
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::WARNING));
-        $this->assertArrayHasKey('request', $data);
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
 
@@ -359,13 +348,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($data['message'], 'test1');
         $this->assertArrayHasKey('context', $data);
-        $this->assertEquals($data['context'],  ['file' => 'test1','line' => 10]);
+        $this->assertEquals($data['context'],  json_encode(['file' => 'test1','line' => 10]));
         $this->assertArrayHasKey('log_level', $data);
         $this->assertEquals($data['log_level'], Logger::ERROR);
         $this->assertArrayHasKey('log_level_name', $data);
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::ERROR));
-        $this->assertArrayHasKey('request', $data);
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
 
@@ -389,13 +377,12 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals($data['message'], 'test');
         $this->assertArrayHasKey('context', $data);
-        $this->assertEquals($data['context'],  ['file' => 'test','line' => 100]);
+        $this->assertEquals($data['context'],  json_encode(['file' => 'test','line' => 100]));
         $this->assertArrayHasKey('log_level', $data);
         $this->assertEquals($data['log_level'], Logger::ERROR);
         $this->assertArrayHasKey('log_level_name', $data);
         $this->assertEquals($data['log_level_name'], $this->logger->getLogLevelName(Logger::ERROR));
-        $this->assertArrayHasKey('request', $data);
-        $this->assertArrayHasKey('trace', $data);
+        $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
 

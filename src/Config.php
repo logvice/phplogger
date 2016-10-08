@@ -296,6 +296,6 @@ class Config
         $extras['server'] = $this->getServerValues();
         $extras['request'] = $this->getRequestValues();
 
-        return $extras;
+        return json_encode($extras);
     }
 }

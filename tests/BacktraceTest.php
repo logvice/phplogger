@@ -16,7 +16,14 @@ class BacktraceTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->backtrace = new Backtrace();
+        $this->backtrace = new Backtrace(true);
+    }
+
+    public function testInactiveBacktrace()
+    {
+        $this->backtrace = new Backtrace(false);
+        $data = $this->backtrace->info();
+        $this->assertEquals('', $data);
     }
 
     public function testInfoEmptyBacktrace()
