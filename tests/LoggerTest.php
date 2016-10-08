@@ -76,7 +76,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
         $this->logger->debug('test', ['test']);
         $data = $this->logger->getLogData();
-        $this->assertArrayHasKey('trace', $data['extras']);
+        $this->assertArrayHasKey('trace', $data);
     }
 
 
@@ -385,7 +385,6 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('extras', $data);
         $this->assertArrayHasKey('created_at', $data);
     }
-
 
     public function testOutputLevelIsLargerThanSubmittedOneAndReturnFalse()
     {

@@ -41,7 +41,7 @@ class Backtrace
             $this->traces = debug_backtrace();
         }
 
-        return $this->formatTraces();
+        return json_encode($this->formatTraces());
     }
 
     protected function formatTraces()

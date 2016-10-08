@@ -340,7 +340,8 @@ class Logger implements LoggerInterface
             'context' => empty($context) ? null : json_encode($context),
             'log_level' => $logLevel,
             'log_level_name' => $this->getLogLevelName($logLevel),
-            'extras' => $this->config->getExtraValues(['trace' => $this->backtrace->info()]),
+            'extras' => $this->config->getExtraValues(),
+            'trace' => $this->backtrace->info(),
             'created_at' => $this->config->getDateTimeFormatted(),
         ];
 

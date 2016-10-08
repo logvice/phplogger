@@ -30,7 +30,7 @@ class BacktraceTest extends \PHPUnit_Framework_TestCase
     {
         $this->backtrace->setTraces([]);
         $data = $this->backtrace->info();
-        $this->assertEmpty($data);
+        $this->assertEquals('[]', $data);
     }
 
     public function testBacktrace()
@@ -59,6 +59,6 @@ class BacktraceTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $this->assertEquals($expected, $data);
+        $this->assertEquals(json_encode($expected), $data);
     }
 }
