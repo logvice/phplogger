@@ -40,25 +40,17 @@ class TCPOutput implements OutputContract
 
     /**
      * Writes a message
-     *
      * @param mixed $logData
-     * @return mixed|void
-     * @throws \Exception
      */
     public function send($logData)
     {
         $this->config($logData);
-
         $this->run();
-
         $this->close();
-
-        return true;
     }
 
     /**
      * @param $logData
-     * @return resource
      */
     protected function config($logData)
     {
