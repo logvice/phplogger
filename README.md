@@ -21,15 +21,25 @@ composer require logvice/phplogger
 <?php
 
 use LogVice\PHPLogger\Logger;
-use LogVice\PHPLogger\Output\FileOutput;
+use LogVice\PHPLogger\Config;
+use LogVice\PHPLogger\Output\TCPOutput;
+use LogVice\PHPLogger\Output\UDPOutput;
+
+// create a config instance
+$config = new Config();
+$config->setAppId('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
+$config->setEnvironment('dev');
+$config->setChannel('php');
+$config->setOutputHandlers([
+    new TCPOutput('127.0.0.1', '8080'),
+    new UDPOutput('127.0.0.1', '514'),
+]);
+$config->setLogLevel(Logger::DEBUG);
 
 // create a log instance
-$log = new Logger('channel');
+$log = new Logger($config);
 
-//pass an object or an array of objects for multiple outputs
-$log->setOutputs(new FileOutput('path/to/your/log/directory', 'log'));
-
-// add records to the log file
+// add records to the log
 $log->debug('foo');
 $log->info('bar');
 $log->notice('foo');

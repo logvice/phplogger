@@ -22,13 +22,19 @@ class TCPOutput implements OutputContract
     protected $address;
 
     /**
+     * @var string
+     */
+    protected $port;
+
+    /**
      * @var int
      */
     protected $timeout;
 
-    public function __construct($address, $timeout = 10)
+    public function __construct($address, $port = '80', $timeout = 10)
     {
         $this->address = $address;
+        $this->port = $port;
         $this->timeout = $timeout;
     }
 
@@ -57,6 +63,7 @@ class TCPOutput implements OutputContract
     protected function config($logData)
     {
         $this->curl = curl_init($this->address);
+        curl_setopt($this->curl, CURLOPT_PORT, $this->port);
         curl_setopt($this->curl, CURLOPT_HEADER, false);
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_POST, true);

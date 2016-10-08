@@ -11,10 +11,17 @@
 
 class Backtrace
 {
+    protected $active;
+
     /**
      * @var array
      */
     protected $traces = [];
+
+    public function __construct($active = false)
+    {
+        $this->active = $active;
+    }
 
     /**
      * @param array $traces
@@ -26,6 +33,10 @@ class Backtrace
 
     public function info()
     {
+        if (!$this->active) {
+            return '';
+        }
+
         if (empty($this->traces)) {
             $this->traces = debug_backtrace();
         }

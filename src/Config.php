@@ -161,7 +161,7 @@ class Config
      */
     public function getSessionValues()
     {
-        $session = [];
+        $session = null;
 
         if (!empty($this->sessionValues)) {
             foreach ($this->sessionValues as $sessionKey) {
@@ -189,7 +189,7 @@ class Config
      */
     public function getRequestValues()
     {
-        $request = [];
+        $request = null;
 
         if (!empty($this->requestValues)) {
             foreach ($this->requestValues as $requestKey) {
@@ -217,7 +217,7 @@ class Config
      */
     public function getServerValues()
     {
-        $server = [];
+        $server = null;
 
         if (!empty($this->serverValues)) {
             foreach ($this->serverValues as $key) {
@@ -250,7 +250,7 @@ class Config
      * @param boolean $trace
      * @return $this
      */
-    public function setTrace($trace)
+    public function activateTrace($trace)
     {
 
         $this->trace = $trace;
@@ -288,5 +288,14 @@ class Config
             ->format('Y-m-d H:i:s');
 
         return $this->timeFormatted;
+    }
+
+    public function getExtraValues(array $extras = [])
+    {
+        $extras['session'] = $this->getSessionValues();
+        $extras['server'] = $this->getServerValues();
+        $extras['request'] = $this->getRequestValues();
+
+        return $extras;
     }
 }

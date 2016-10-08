@@ -337,13 +337,10 @@ class Logger implements LoggerInterface
             'channel' => $this->config->getChannel(),
             'environment' => $this->config->getEnvironment(),
             'message' => (string) $message,
-            'context' => $context,
+            'context' => empty($context) ? null : json_encode($context),
             'log_level' => $logLevel,
             'log_level_name' => $this->getLogLevelName($logLevel),
-            'session' => $this->config->getSessionValues(),
-            'request' => $this->config->getRequestValues(),
-            'server' => $this->config->getServerValues(),
-            'trace' => $this->config->isTrace() ? $this->backtrace->info() : '',
+            'extras' => $this->config->getExtraValues(['trace' => $this->backtrace->info()]),
             'created_at' => $this->config->getDateTimeFormatted(),
         ];
 
