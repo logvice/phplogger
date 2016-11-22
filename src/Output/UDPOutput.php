@@ -40,6 +40,14 @@ class UDPOutput implements OutputContract
      */
     public function __construct($address, $port = 514, $header = '')
     {
+        if (filter_var($address, FILTER_VALIDATE_IP) === false) {
+            $address = gethostbyname($address);
+        }
+
+        if (filter_var($address, FILTER_VALIDATE_IP) === false) {
+            throw new \Exception('Valid IP address could not be found');
+        }
+
         $this->address = $address;
         $this->port = $port;
         $this->header = $header;
