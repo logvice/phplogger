@@ -70,6 +70,8 @@ class Logger implements LoggerInterface
         600 => LogLevel::EMERGENCY
     ];
 
+    const LOG_TYPE = 'applog';
+
     /**
      * @var Config $config
      */
@@ -336,6 +338,7 @@ class Logger implements LoggerInterface
 
         $this->logData = [
             'app_key' => $this->config->getAppKey(),
+            'type' => self::LOG_TYPE,
             'channel' => $this->config->getChannel(),
             'environment' => $this->config->getEnvironment(),
             'message' => (string) $message,

@@ -98,6 +98,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('app_key', $data);
         $this->assertEquals($data['app_key'], 'a02206e4fb278e5e80c68eb51293156a30c2a90a');
+        $this->assertArrayHasKey('type', $data);
+        $this->assertEquals($data['type'], 'applog');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -121,6 +123,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('app_key', $data);
         $this->assertEquals($data['app_key'], 'a02206e4fb278e5e80c68eb51293156a30c2a90a');
+        $this->assertArrayHasKey('type', $data);
+        $this->assertEquals($data['type'], 'applog');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -144,6 +148,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('app_key', $data);
         $this->assertEquals($data['app_key'], 'a02206e4fb278e5e80c68eb51293156a30c2a90a');
+        $this->assertArrayHasKey('type', $data);
+        $this->assertEquals($data['type'], 'applog');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -167,6 +173,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('app_key', $data);
         $this->assertEquals($data['app_key'], 'a02206e4fb278e5e80c68eb51293156a30c2a90a');
+        $this->assertArrayHasKey('type', $data);
+        $this->assertEquals($data['type'], 'applog');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -190,6 +198,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('app_key', $data);
         $this->assertEquals($data['app_key'], 'a02206e4fb278e5e80c68eb51293156a30c2a90a');
+        $this->assertArrayHasKey('type', $data);
+        $this->assertEquals($data['type'], 'applog');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -213,6 +223,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('app_key', $data);
         $this->assertEquals($data['app_key'], 'a02206e4fb278e5e80c68eb51293156a30c2a90a');
+        $this->assertArrayHasKey('type', $data);
+        $this->assertEquals($data['type'], 'applog');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -236,6 +248,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('app_key', $data);
         $this->assertEquals($data['app_key'], 'a02206e4fb278e5e80c68eb51293156a30c2a90a');
+        $this->assertArrayHasKey('type', $data);
+        $this->assertEquals($data['type'], 'applog');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -259,6 +273,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('app_key', $data);
         $this->assertEquals($data['app_key'], 'a02206e4fb278e5e80c68eb51293156a30c2a90a');
+        $this->assertArrayHasKey('type', $data);
+        $this->assertEquals($data['type'], 'applog');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -282,6 +298,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('app_key', $data);
         $this->assertEquals($data['app_key'], 'a02206e4fb278e5e80c68eb51293156a30c2a90a');
+        $this->assertArrayHasKey('type', $data);
+        $this->assertEquals($data['type'], 'applog');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -305,6 +323,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('app_key', $data);
         $this->assertEquals($data['app_key'], 'a02206e4fb278e5e80c68eb51293156a30c2a90a');
+        $this->assertArrayHasKey('type', $data);
+        $this->assertEquals($data['type'], 'applog');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -328,6 +348,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('app_key', $data);
         $this->assertEquals($data['app_key'], 'a02206e4fb278e5e80c68eb51293156a30c2a90a');
+        $this->assertArrayHasKey('type', $data);
+        $this->assertEquals($data['type'], 'applog');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -351,6 +373,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('app_key', $data);
         $this->assertEquals($data['app_key'], 'a02206e4fb278e5e80c68eb51293156a30c2a90a');
+        $this->assertArrayHasKey('type', $data);
+        $this->assertEquals($data['type'], 'applog');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
@@ -380,6 +404,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('app_key', $data);
         $this->assertEquals($data['app_key'], 'a02206e4fb278e5e80c68eb51293156a30c2a90a');
+        $this->assertArrayHasKey('type', $data);
+        $this->assertEquals($data['type'], 'applog');
         $this->assertArrayHasKey('channel', $data);
         $this->assertEquals($data['channel'], 'php-test');
         $this->assertArrayHasKey('environment', $data);
