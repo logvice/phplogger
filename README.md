@@ -27,9 +27,10 @@ use LogVice\PHPLogger\Output\UDPOutput;
 
 // create a config instance
 $config = new Config();
-$config->setAppId('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
+$config->setAppKey('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 $config->setEnvironment('dev');
 $config->setChannel('php');
+$config->activateBacktrace();
 $config->setOutputHandlers([
     new TCPOutput('127.0.0.1', '8080'),
     new UDPOutput('127.0.0.1', '514'),
@@ -57,7 +58,7 @@ $log->log(Logger::ERROR, 'foo');
 set_error_handler(function ($errno, $errstr, $errfile, $errline) {
     // create a config instance
     $config = new LogVice\PHPLogger\Config();
-    $config->setAppId('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
+    $config->setAppKey('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
     $config->setEnvironment('dev');
     $config->setChannel('php');
     $config->setOutputHandlers([
@@ -76,7 +77,7 @@ set_error_handler(function ($errno, $errstr, $errfile, $errline) {
 set_exception_handler(function ($exception) {
     // create a config instance
     $config = new LogVice\PHPLogger\Config();
-    $config->setAppId('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
+    $config->setAppKey('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
     $config->setEnvironment('dev');
     $config->setChannel('php');
     $config->setOutputHandlers([
@@ -95,7 +96,7 @@ set_exception_handler(function ($exception) {
 register_shutdown_function(function () {
     // create a config instance
     $config = new LogVice\PHPLogger\Config();
-    $config->setAppId('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
+    $config->setAppKey('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
     $config->setEnvironment('dev');
     $config->setChannel('php');
     $config->setOutputHandlers([
