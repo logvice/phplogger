@@ -23,7 +23,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->config = new Config();
-        $this->config->setAppId('b85066fc-248f-4ea9-b13d-0858dbf4efc1')
+        $this->config->setAppKey('a02206e4fb278e5e80c68eb51293156a30c2a90a')
             ->setEnvironment('DEV')
             ->setChannel('php-test')
             ->setSessionValues(['user'])
@@ -50,36 +50,36 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->config->setOutputHandlers([new FakeOutput()]);
         $this->assertEquals(1, count($this->config->getOutputHandlers()));
 
-        $this->config->setOutputHandlers([new FakeOutput(), new UDPOutput('test')]);
+        $this->config->setOutputHandlers([new FakeOutput(), new UDPOutput('logvice.com')]);
         $this->assertEquals(2, count($this->config->getOutputHandlers()));
 
-        $this->config->setOutputHandlers([new FakeOutput(), new UDPOutput('test'), new TCPOutput('test')]);
+        $this->config->setOutputHandlers([new FakeOutput(), new UDPOutput('logvice.com'), new TCPOutput('logvice.com')]);
         $this->assertEquals(3, count($this->config->getOutputHandlers()));
     }
 
-    public function testSetAppId()
+    public function testSetAppKey()
     {
-        $this->assertEquals('b85066fc-248f-4ea9-b13d-0858dbf4efc1', $this->config->getAppId());
+        $this->assertEquals('a02206e4fb278e5e80c68eb51293156a30c2a90a', $this->config->getAppKey());
 
-        $this->config->setAppId('a85066fc-248f-4ea9-b13d-0858dbf4efc1');
+        $this->config->setAppKey('768117a946014dbf2dc19e1a0a1f707126a6f7f1');
 
-        $this->assertEquals('a85066fc-248f-4ea9-b13d-0858dbf4efc1', $this->config->getAppId());
+        $this->assertEquals('768117a946014dbf2dc19e1a0a1f707126a6f7f1', $this->config->getAppKey());
     }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testInvalidTypeAppIdProvided()
+    public function testInvalidTypeAppKeyProvided()
     {
-        $this->config->setAppId(1);
+        $this->config->setAppKey(1);
     }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testInvalidFormatAppIdProvided()
+    public function testInvalidFormatAppKeyProvided()
     {
-        $this->config->setAppId('test');
+        $this->config->setAppKey('test');
     }
 
     public function testSetEnvironment()

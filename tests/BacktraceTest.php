@@ -12,25 +12,22 @@
 class BacktraceTest extends \PHPUnit_Framework_TestCase
 {
     protected $filePath;
+    /**
+     * @var Backtrace
+     */
     protected $backtrace;
 
     protected function setUp()
     {
-        $this->backtrace = new Backtrace(true);
+        $this->backtrace = new Backtrace();
+        $this->backtrace->status(true);
     }
 
     public function testInactiveBacktrace()
     {
-        $this->backtrace = new Backtrace(false);
+        $this->backtrace = new Backtrace();
         $data = $this->backtrace->info();
         $this->assertEquals('', $data);
-    }
-
-    public function testInfoEmptyBacktrace()
-    {
-        $this->backtrace->setTraces([]);
-        $data = $this->backtrace->info();
-        $this->assertEquals('[]', $data);
     }
 
     public function testBacktrace()
@@ -60,5 +57,13 @@ class BacktraceTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->assertEquals(json_encode($expected), $data);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInvalidBacktraceStatus()
+    {
+        $this->backtrace->status(1);
     }
 }

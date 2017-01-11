@@ -16,7 +16,7 @@ class Config
     /**
      * @var string
      */
-    private $appId = '';
+    private $appKey = '';
 
     /**
      * @var string
@@ -51,7 +51,7 @@ class Config
     /**
      * @var bool
      */
-    private $trace = false;
+    private $backtrace = false;
 
     /**
      * @var int
@@ -66,22 +66,22 @@ class Config
     /**
      * @return string UUID
      */
-    public function getAppId()
+    public function getAppKey()
     {
-        return $this->appId;
+        return $this->appKey;
     }
 
     /**
-     * @param string $appId
+     * @param string $appKey
      * @return $this
      */
-    public function setAppId($appId)
+    public function setAppKey($appKey)
     {
-        if (!is_string($appId) || !preg_match('/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/', $appId)) {
+        if (!is_string($appKey) || !ctype_alnum($appKey) || strlen($appKey) !== 40) {
             throw new \InvalidArgumentException();
         }
 
-        $this->appId = $appId;
+        $this->appKey = $appKey;
         return $this;
     }
 
@@ -241,19 +241,17 @@ class Config
     /**
      * @return boolean
      */
-    public function isTrace()
+    public function backtraceStatus()
     {
-        return $this->trace;
+        return $this->backtrace;
     }
 
     /**
-     * @param boolean $trace
      * @return $this
      */
-    public function activateTrace($trace)
+    public function activateBacktrace()
     {
-
-        $this->trace = $trace;
+        $this->backtrace = true;
         return $this;
     }
 
@@ -277,7 +275,7 @@ class Config
 
     /**
      * Get date time on appropriate format
-     * @return \DateTime
+     * @return string
      */
     public function getDateTimeFormatted()
     {

@@ -11,16 +11,20 @@
 
 class Backtrace
 {
-    protected $active;
+    protected $status = false;
 
     /**
      * @var array
      */
     protected $traces = [];
 
-    public function __construct($active = false)
+    public function status($status)
     {
-        $this->active = $active;
+        if(!is_bool($status)){
+            throw new \InvalidArgumentException();
+        }
+
+        $this->status = $status;
     }
 
     /**
@@ -33,7 +37,7 @@ class Backtrace
 
     public function info()
     {
-        if ($this->active === false) {
+        if ($this->status === false) {
             return '';
         }
 

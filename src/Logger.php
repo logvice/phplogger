@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 
+use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
 
 class Logger implements LoggerInterface
@@ -59,14 +60,14 @@ class Logger implements LoggerInterface
      * @var array
      */
     protected $logLevels = [
-        100 => 'DEBUG',
-        200 => 'INFO',
-        250 => 'NOTICE',
-        300 => 'WARNING',
-        400 => 'ERROR',
-        500 => 'CRITICAL',
-        550 => 'ALERT',
-        600 => 'EMERGENCY',
+        100 => LogLevel::DEBUG,
+        200 => LogLevel::INFO,
+        250 => LogLevel::NOTICE,
+        300 => LogLevel::WARNING,
+        400 => LogLevel::ERROR,
+        500 => LogLevel::CRITICAL,
+        550 => LogLevel::ALERT,
+        600 => LogLevel::EMERGENCY
     ];
 
     /**
@@ -93,6 +94,7 @@ class Logger implements LoggerInterface
     {
         $this->config = $config;
         $this->backtrace = new Backtrace();
+        $this->backtrace->status($this->config->backtraceStatus());
     }
 
     /**
@@ -220,7 +222,7 @@ class Logger implements LoggerInterface
     public function handleException(\Exception $exception)
     {
 
-        if ($this->config->isTrace()) {
+        if ($this->config->backtraceStatus()) {
             $this->backtrace->setTraces($exception->getTrace());
         }
 
@@ -333,7 +335,7 @@ class Logger implements LoggerInterface
         }
 
         $this->logData = [
-            'app_id' => $this->config->getAppId(),
+            'app_key' => $this->config->getAppKey(),
             'channel' => $this->config->getChannel(),
             'environment' => $this->config->getEnvironment(),
             'message' => (string) $message,
