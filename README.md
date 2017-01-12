@@ -66,7 +66,7 @@ set_error_handler(function ($errno, $errstr, $errfile, $errline) {
         new LogVice\PHPLogger\Output\UDPOutput('127.0.0.1', '514'),
         new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'file-name', true)
     ]);
-    $config->setLogLevel(Logger::DEBUG);
+    $config->setLogLevel(Logger::ERROR);
 
     // create a log instance
     $logger = new LogVice\PHPLogger\Logger($config);
@@ -85,7 +85,7 @@ set_exception_handler(function ($exception) {
         new LogVice\PHPLogger\Output\UDPOutput('127.0.0.1', '514'),
         new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'file-name', true)
     ]);
-    $config->setLogLevel(Logger::DEBUG);
+    $config->setLogLevel(Logger::ERROR);
 
     // create a log instance
     $logger = new LogVice\PHPLogger\Logger($config);
@@ -104,7 +104,7 @@ register_shutdown_function(function () {
         new LogVice\PHPLogger\Output\UDPOutput('127.0.0.1', '514'),
         new LogVice\PHPLogger\Output\FileOutput('path/to/logs', 'file-name', true)
     ]);
-    $config->setLogLevel(Logger::DEBUG);
+    $config->setLogLevel(Logger::ERROR);
 
     // create a log instance
     $logger = new LogVice\PHPLogger\Logger($config);
