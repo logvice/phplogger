@@ -343,6 +343,7 @@ class Logger implements LoggerInterface
             'environment' => $this->config->getEnvironment(),
             'message' => (string) $message,
             'context' => empty($context) ? null : json_encode($context),
+            'hostname' => $this->config->getHostname(),
             'log_level' => $logLevel,
             'log_level_name' => $this->getLogLevelName($logLevel),
             'extras' => $this->config->getExtraValues(),

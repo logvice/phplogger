@@ -159,4 +159,10 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('SERVER_ADDR', $values);
         $this->assertEquals('foo', $values['SERVER_ADDR']);
     }
+
+    public function testHostname()
+    {
+        $hostname = $this->config->getHostname();
+        $this->assertTrue(is_string($hostname));
+    }
 }

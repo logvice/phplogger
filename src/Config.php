@@ -296,4 +296,9 @@ class Config
 
         return json_encode($extras);
     }
+
+    public function getHostname()
+    {
+        return gethostname();
+    }
 }
